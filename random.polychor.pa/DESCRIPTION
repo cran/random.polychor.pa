@@ -1,8 +1,8 @@
 Package: random.polychor.pa
 Type: Package
 Title: A Parallel Analysis With Polychoric Correlation Matrices
-Version: 1.1
-Date: 2010-04-07
+Version: 1.1.1
+Date: 2010-07-09
 Author: Fabio Presaghi & Marta Desimoni
 Maintainer: Fabio Presaghi <fabio.presaghi@uniroma1.it>
 Description: The Function performs a parallel analysis using simulated
@@ -17,10 +17,17 @@ Description: The Function performs a parallel analysis using simulated
         the Parallel Analysis method used to choose a non-random number
         of factors should also be based on randomly generated
         polychoric correlation matrices and not on Pearson correlation
-        matrices.
+        matrices. Version 1.1.1 a minor bug in showing the estimanted
+        time needed to conclude the simulation is fixed. In this
+        version it is also introduced the possibility to manage
+        datafiles containing factor variables (i.e., variables with
+        ordered categories) which in past versions may cause the
+        function to stop computations when the Pearson correlation
+        matrix is computed (due to the fact that in this instance a
+        numerical matrix is expected).
 Depends: psych, nFactors
 LazyLoad: yes
 LazyData: yes
 License: GPL (>=2)
 Encoding: latin1
-Built: R 2.11.0; ; 2010-04-28 14:13:48 UTC; windows
+Built: R 2.11.1; ; 2010-07-09 09:58:00 UTC; windows

@@ -5,6 +5,13 @@ random.polychor.pa <- function(nvar="NULL", n.ss="NULL", nrep, nstep="NULL", dat
 	require(psych)
 	require(nFactors)
 	cat("\n")
+
+	for (z in 1:ncol(data.matrix)) {
+		if(is.numeric(data.matrix[,z])==FALSE) {
+			data.matrix[,z]<-as.numeric(data.matrix[,z]) 
+		}
+	}
+
 	data.matrix <- as.matrix(data.matrix)
 	if (!is.null(dimnames(data.matrix))) {
 		dimnames(data.matrix) <- list(NULL, NULL)
@@ -93,9 +100,9 @@ random.polychor.pa <- function(nvar="NULL", n.ss="NULL", nrep, nstep="NULL", dat
 			end.pt<-Sys.time()
 			estimated.t<-difftime(end.pt, start.t)
 			estimated.total<-estimated.t*nrep
-			estimated.t<-as.difftime(estimated.t, format = "%H-%M-%S", units = "secs")
+			estimated.t<-as.difftime(estimated.t, format = "%H-%M-%S", units = "mins")
 			estimated.total<-round((as.difftime(estimated.total, format = "%H %M %S", units = "mins")), digits=2)
-			cat("The whole simulation will take no less than", estimated.total, "min.", "to terminate", "\n", "\n")
+			cat("The whole simulation will take no less than", estimated.total/60, "min.", "to terminate", "\n", "\n")
 			flush.console()
 		}
 	}

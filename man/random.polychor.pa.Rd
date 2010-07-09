@@ -65,11 +65,17 @@ The function perform a parallel analysis (Horn, 1976) using randomly
   variables of the provided data.matrix. The function will read the
   entered data.matrix and extracts: the number of units (i.e., number of
   rows); the number of variables (i.e., number of columns); and the
-  number of categories of each item. This version of the function (1.1)
+  number of categories of each item. Version 1.1 of the function
   accepts also variables with varying number of categories (e.g., three
   items with only two categories and two items with three categories,
-  etc.). These information are used to generate the nrep random raw
-  datasets with the same characteristics of the original real data
+  etc.). While Version 1.1.1 fixes a minor bug in showing the estimanted
+  time needed to conclude the simulation. In this last version it is also
+  introduced the possibility to manage datafiles containing factor variables
+  (i.e., variables with ordered categories) which in past versions may
+  cause the function to stop computations when the Pearson correlation
+  matrix is computed (due to the fact that in this instance a numerical
+  matrix is expected). These information are used to generate the nrep
+  random raw datasets with the same characteristics of the original real data
   set. So only three information are needed for the problem to run: the
   number of replications (nrep), the data matrix (data.matrix) and the
   percentile to be used (q.eigen). A check for missing values within the
@@ -247,12 +253,15 @@ random.polychor.pa(nrep=5, data.matrix=raw.item.data, q.eigen=.99)
 ### method of selection.
 ### Before launching the example consider that the
 ### ESTIMATED TIME TO COMPLETE THE SIMULATION IS ABOUT: 10 MIN.
-require(psych)
-data(bfi)
-raw.data<-as.matrix(bfi)
-raw.item.data <- (raw.data[1:100,])
-test.1<-random.polychor.pa(nrep=3, data.matrix=raw.item.data, q.eigen=.99)
-test.1
+### to run the example the symbol # should be deleted from the
+### following 6 instructions.
+
+#require(psych)
+#data(bfi)
+#raw.data<-as.matrix(bfi)
+#raw.item.data <- (raw.data[1:100,])
+#test.1<-random.polychor.pa(nrep=3, data.matrix=raw.item.data, q.eigen=.99)
+#test.1
 
 
 ### EXAMPLE 3:
