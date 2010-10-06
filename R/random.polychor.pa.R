@@ -90,12 +90,12 @@ random.polychor.pa <- function(nvar="NULL", n.ss="NULL", nrep, nstep="NULL", dat
 		}
 		######################## FINE loop che genera una matrice di dati discreti casuali
 
-		f1.poly.cor<-poly.mat(matrix.3, short = TRUE, std.err = FALSE, ML = FALSE)
+		f1.poly.cor<-polychoric(matrix.3, polycor=TRUE)$rho
 		f1.cor<-cor(matrix.3)
 		eigen.data[,j] <-eigen(corFA(f1.poly.cor))$values
 		eigen.data1[,j] <-eigen(corFA(f1.cor))$values
-		eigen.data.pca[,j] <-eigen(cor(f1.poly.cor))$values
-		eigen.data1.pca[,j] <-eigen(cor(f1.cor))$values
+		eigen.data.pca[,j] <-eigen(f1.poly.cor)$values
+		eigen.data1.pca[,j] <-eigen(f1.cor)$values
 		if (j==1) {
 			end.pt<-Sys.time()
 			estimated.t<-difftime(end.pt, start.t)
@@ -137,7 +137,7 @@ random.polychor.pa <- function(nvar="NULL", n.ss="NULL", nrep, nstep="NULL", dat
 	st.matrix
 	colnames(st.matrix.pca) <- c("P.SimMeanEigen.PCA", "P.SimSDEigen.PCA",  "P.Sim95perc.PCA", "P.SimQuant.PCA", "Factor.PCA", "C.SimMeanEigen.PCA", "C.SimSDEigen.PCA",  "C.Sim95perc.PCA", "C.SimQuant.PCA", "Emp.Polyc.Eigen.PCA", "Emp.Pears.Eigen.PCA", "Eigen.diff.Polyc.PCA", "Eigen.diff.Pears.PCA", "Nr.poly.pa.fact.PCA", "Nr.pear.pa.fact.PCA")
 	st.matrix.pca
-	matrix.cor1 <- poly.mat(data.matrix, short = TRUE, std.err = FALSE, ML = FALSE)
+	matrix.cor1 <- polychoric(data.matrix, polycor=TRUE)$rho
 	matrix.cor2 <- cor(data.matrix)
 
 	### begin of polychor.map function
@@ -226,8 +226,8 @@ random.polychor.pa <- function(nvar="NULL", n.ss="NULL", nrep, nstep="NULL", dat
 		st.matrix[riga,13]<-(st.matrix[riga,11] - st.matrix[riga,9])
 		st.matrix[riga,15]<-(st.matrix[riga,13]>0)
         }
-        st.matrix.pca[,10]<- eigen(cor(matrix.cor1))$values
-	st.matrix.pca[,11]<- eigen(cor(matrix.cor2))$values
+        st.matrix.pca[,10]<- eigen(matrix.cor1)$values
+	st.matrix.pca[,11]<- eigen(matrix.cor2)$values
 	for (riga in 1:nvar) {
 		st.matrix.pca[riga,12]<-(st.matrix.pca[riga,10] - st.matrix.pca[riga,4])
 		st.matrix.pca[riga,14]<-(st.matrix.pca[riga,12]>0)

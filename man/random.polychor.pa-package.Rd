@@ -17,8 +17,8 @@
 \tabular{ll}{
 Package: \tab random.polychor.pa\cr
 Type: \tab Package\cr
-Version: \tab 1.1.1\cr
-Date: \tab 2010-07-09\cr
+Version: \tab 1.1.2\cr
+Date: \tab 2010-10-06\cr
 License: \tab GPL Version 2 or later\cr
 LazyLoad: \tab yes\cr
 }
@@ -42,13 +42,16 @@ needed). A comparison with eigenvalues extracted from both randomly
 simulated Pearson correlation matrices and real data is also also
 included. Finally, for both type of correlation matrix (Polychoric vs
 Pearson), the two versions (the classic squared coefficient and the 4th
-power coefficient) of Velicer's MAP criterion are calculated. Version
-1.1.1 fixes a minor bug in showing the estimanted time needed to conclude the
-simulation. In this version it is also introduced the possibility to
-manage datafiles containing factor variables (i.e., variables with
-ordered categories) which in past versions may cause the function to
-stop computations when the Pearson correlation matrix is computed (due
-to the fact that in this instance a numerical matrix is expected). 
+power coefficient) of Velicer's MAP criterion are calculated. In version
+1.1.1, a minor bug in the regarding the estimated time needed to
+complete the simulation is fixed. Also in this version, the function is now able
+to manage supplied data.matrix in which variables representing factors
+(i.e., variables with ordered categories) are present and may cause an
+error when the Pearson correlation matrix is calculated. As the
+poly.mat() function used to calculate the polychoric correlation matrix
+is going to be deprecated in favour of polychoric() function, the
+random.polychor.pa was consequently updated (version 1.1.2) to account
+for changes in psych() package.
 } 
 \author{
  Fabio Presaghi \email{fabio.presaghi@uniroma1.it} and Marta Desimoni

@@ -65,24 +65,22 @@ The function perform a parallel analysis (Horn, 1976) using randomly
   variables of the provided data.matrix. The function will read the
   entered data.matrix and extracts: the number of units (i.e., number of
   rows); the number of variables (i.e., number of columns); and the
-  number of categories of each item. Version 1.1 of the function
-  accepts also variables with varying number of categories (e.g., three
+  number of categories of each item. From version 1.1, the function
+  accepts also variables with varying number of categories (e.g., three  
   items with only two categories and two items with three categories,
-  etc.). While Version 1.1.1 fixes a minor bug in showing the estimanted
-  time needed to conclude the simulation. In this last version it is also
-  introduced the possibility to manage datafiles containing factor variables
-  (i.e., variables with ordered categories) which in past versions may
-  cause the function to stop computations when the Pearson correlation
-  matrix is computed (due to the fact that in this instance a numerical
-  matrix is expected). These information are used to generate the nrep
-  random raw datasets with the same characteristics of the original real data
-  set. So only three information are needed for the problem to run: the
-  number of replications (nrep), the data matrix (data.matrix) and the
-  percentile to be used (q.eigen). A check for missing values within the
-  real dataset is present and if present will be treated LISTWISE. In
-  this case a warning message will prompt the user signalling how NA
-  were treated (LISTWISE is by now the only treatment considered) and
-  the new sample size. No further checks are made on the raw data, so
+  etc.). In version 1.1.1, the function is also able to manage supplied
+  data.matrix in which variables represent factors (i.e., variables
+  with ordered categories) may cause an error when the Pearson
+  correlation matrix is calculated. The information in the supplied
+  data.matrix are used to generate the nrep random raw datasets with the
+  same characteristics of the original real data set. So only three
+  information are needed for the problem to run: the number of
+  replications (nrep), the data matrix (data.matrix) and the percentile
+  to be used (q.eigen). A check for missing values within the real
+  dataset is present and if present will be treated LISTWISE. In this
+  case a warning message will prompt the user signalling how NA were
+  treated (LISTWISE is by now the only treatment considered) and the new
+  sample size. No further checks are made on the raw data, so
   out-of-range values are not detected and it is on the behalf of the
   user to make a preliminary check on the reliability of data. A table
   summarizing the groups of items with different number of categories
@@ -105,7 +103,11 @@ The function perform a parallel analysis (Horn, 1976) using randomly
   classic squared coefficient and the 4th power coefficient) of
   Velicer's MAP criterion are calculated (Velicer, 1976; Velicer, Eaton,
   & Fava, 2000) by implementing under R the code released by O'Connor
-  (2000) for SPSS, SAS and MATLAB.  
+  (2000) for SPSS, SAS and MATLAB. As the poly.mat() function used to
+  calculate the polychoric correlation matrix is going to be deprecated
+  in favour of polychoric() function, the random.polychor.pa was
+  consequently updated (version 1.1.2) to account for changes in psych()
+  package.      
 }
 \value{
   The function returns the number of factors for Polychoric and Pearson
@@ -219,11 +221,11 @@ In running the random.polychor.pa function it should be reminded that it
   three basic information needed to build the random matrices (number of
   rows, number of columns and the number of categories for each manifest
   variable). The number of categories for each variable is derived from
-  the raw data.matrix, so if the possible number of categories is for a
+  the raw data.matrix, so if the possible number of categories for a
   specific item is for example 5, but subjects endorse only three out of
   the five categories then the random.polychor.pa function will
-  reproduce a variable with only three categories. This means that the
-  function guarantee that the empirical and the simulated data matrix
+  simulate a variable with only three categories. This means that the
+  function guarantees that the empirical and the simulated data matrix
   are similar, but this also means that by changing the sample of
   participants the simulated data will change (even if slightly).
 }
@@ -253,15 +255,12 @@ random.polychor.pa(nrep=5, data.matrix=raw.item.data, q.eigen=.99)
 ### method of selection.
 ### Before launching the example consider that the
 ### ESTIMATED TIME TO COMPLETE THE SIMULATION IS ABOUT: 10 MIN.
-### to run the example the symbol # should be deleted from the
-### following 6 instructions.
-
-#require(psych)
-#data(bfi)
-#raw.data<-as.matrix(bfi)
-#raw.item.data <- (raw.data[1:100,])
-#test.1<-random.polychor.pa(nrep=3, data.matrix=raw.item.data, q.eigen=.99)
-#test.1
+require(psych)
+data(bfi)
+raw.data<-as.matrix(bfi)
+raw.item.data <- (raw.data[1:100, 2:6])
+test.1<-random.polychor.pa(nrep=3, data.matrix=raw.item.data, q.eigen=.99)
+test.1
 
 
 ### EXAMPLE 3:
