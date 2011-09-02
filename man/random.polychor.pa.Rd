@@ -42,7 +42,8 @@
   version of the function.
 }
   \item{data.matrix}{
-the name of raw data matrix. The raw data.matrix should be numeric. No
+the name of raw data matrix. The raw data.matrix should be numeric and
+  none of the ordered category should be coded as 0 (zero). No
   automatic recode routine is provided within the function to deal with
   alphanumeric content of the ordered categories of manifest
   variables. So the user performs all these recodings before running the
@@ -249,7 +250,7 @@ eigen(cor(raw.item.data))
 random.polychor.pa(nrep=5, data.matrix=raw.item.data, q.eigen=.99)
 
 
-### EXAMPLE 2:
+### EXAMPLE 2a:
 ### this example is particularly instructive on how the solution may
 ### change by changing the type of correlation, method of extraction and
 ### method of selection.
@@ -258,10 +259,35 @@ random.polychor.pa(nrep=5, data.matrix=raw.item.data, q.eigen=.99)
 require(psych)
 data(bfi)
 raw.data<-as.matrix(bfi)
-raw.item.data <- (raw.data[1:100, 2:6])
-test.1<-random.polychor.pa(nrep=3, data.matrix=raw.item.data, q.eigen=.99)
+raw.data <- (raw.data[1:100,2:6])
+test.1<-random.polychor.pa(nrep=3, data.matrix=raw.data, q.eigen=.99)
 test.1
 
+### EXAMPLE 2b:
+### in this example one of the categories of item1 is recoded: 2=1
+### so this item has 5 categories: 1 (2) 3 4 5 6
+### category 1 is within brackets as it has frequency=0
+### so this is a case where empirical data (0 2 3 4 5 6) diverge from
+### theorethical data (0 1 2 3 4 5 6)
+require(psych)
+data(bfi)
+raw.data.1<-as.matrix(bfi)
+raw.data.1 <- (raw.data.1[1:100,1:25])
+for(i in 1:nrow(raw.data.1)) { if(raw.data.1[i,1]==2) raw.data.1[i,1]<-1} 
+test.2<-random.polychor.pa(nrep=3, data.matrix=raw.data.1, q.eigen=.99)
+test.2
+
+### EXAMPLE 2c:
+### in this example one of the categories of item1 is recoded: 1=0
+### so this item has one of its categories coded as 0 
+### this will cause polychoric() function to stop with error
+### and the random.polychoric.pa will prompt a warning message
+#require(psych)
+#data(bfi)
+#raw.data.2<-as.matrix(bfi)
+#raw.data.2 <- (raw.data.2[1:100,1:25])
+#for(i in 1:nrow(raw.data.2)) { if(raw.data.2[i,1]==1) raw.data.2[i,1]<-0} # recode 1=0
+# random.polychor.pa(nrep=3, data.matrix=raw.data.2, q.eigen=.99)
 
 ### EXAMPLE 3:
 ######## for SPSS users ####

@@ -1,8 +1,8 @@
 Package: random.polychor.pa
 Type: Package
 Title: A Parallel Analysis With Polychoric Correlation Matrices
-Version: 1.1.2
-Date: 2010-10-06
+Version: 1.1.3
+Date: 2011-09-02
 Author: Fabio Presaghi & Marta Desimoni
 Maintainer: Fabio Presaghi <fabio.presaghi@uniroma1.it>
 Description: The Function performs a parallel analysis using simulated
@@ -25,12 +25,21 @@ Description: The Function performs a parallel analysis using simulated
         error when the Pearson correlation matrix is calculated.
         Version 1.1.2 simply has updated the function that calculates
         the polycoric correlation matrix due to changes in the psych()
-        package.
+        package. Version 1.1.3 tackles two problems signalled by users:
+        1) the possibility to make available the results of simulation
+        for plotting them in other softwares. Now the
+        random.polychor.pa will show, upon request, all the data used
+        in the scree-plot.  2) The function polichoric() of the psych()
+        package does not handle data matrices that include 0 as
+        possible category and will cause the function to stop with
+        error. So a check for the detection of the 0 code within the
+        provided data.matrix is now added and will cause the
+        random.polychor.pa function to stop with a warning message.
 Depends: psych, nFactors
 LazyLoad: yes
 LazyData: yes
 License: GPL (>= 2)
 Encoding: latin1
-Packaged: 2010-11-03 09:00:12 UTC; presaghi
+Packaged: 2011-09-05 08:03:52 UTC; root
 Repository: CRAN
-Date/Publication: 2010-11-03 10:10:08
+Date/Publication: 2011-09-05 19:37:48

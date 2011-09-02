@@ -4,7 +4,8 @@
 \title{
   A Parallel Analysis with Random Polychoric Correlation Matrices
 }
-\description{The function performs a parallel analysis using simulated
+\description{
+  The function performs a parallel analysis using simulated
   polychoric correlation matrices. The function will extract the
   eigenvalues from each random generated polychoric correlation matrix
   and from the polychoric correlation matrix of real data. A plot
@@ -14,13 +15,13 @@
   PA-Pearson correlations methods, FA vs PCA solutions are finally presented.
 }
 \details{
-\tabular{ll}{
-Package: \tab random.polychor.pa\cr
-Type: \tab Package\cr
-Version: \tab 1.1.2\cr
-Date: \tab 2010-10-06\cr
-License: \tab GPL Version 2 or later\cr
-LazyLoad: \tab yes\cr
+  \tabular{ll}{
+    Package: \tab random.polychor.pa\cr
+    Type: \tab Package\cr
+    Version: \tab 1.1.3\cr
+    Date: \tab 2011-09-02\cr
+    License: \tab GPL Version 2 or later\cr
+    LazyLoad: \tab yes\cr
 }
 The function perform a parallel analysis (Horn, 1965) using randomly
 simulated polychoric correlations. Generates nrep random samples of the
@@ -51,11 +52,19 @@ error when the Pearson correlation matrix is calculated. As the
 poly.mat() function used to calculate the polychoric correlation matrix
 is going to be deprecated in favour of polychoric() function, the
 random.polychor.pa was consequently updated (version 1.1.2) to account
-for changes in psych() package.
-} 
+for changes in psych() package.  Version 1.1.3 tackles two problems
+signalled by users: 1) the possibility to make available the results of
+simulation for plotting them in other softwares. Now the
+random.polychor.pa will show, upon request, all the data used in the
+scree-plot.  2) The function polichoric() of the psych() package does
+not handle data matrices that include 0 as possible category and will
+cause the function to stop with error. So a check for the detection of
+the 0 code within the provided data.matrix is now added and will cause
+the random.polychor.pa function to stop with a warning message.
+}
 \author{
- Fabio Presaghi \email{fabio.presaghi@uniroma1.it} and Marta Desimoni
- \email{marta.desimoni@uniroma1.it} 
+  Fabio Presaghi \email{fabio.presaghi@uniroma1.it} and Marta Desimoni
+ \email{marta.desimoni@uniroma1.it}
 }
 \references{
   Cho, S.J., Li, F., & Bandalos, D., (2009). Accuracy of the Parallel
@@ -69,16 +78,18 @@ for changes in psych() package.
   of components using parallel analysis and Velicer\kbd{'}s MAP test. Behavior
   Research Methods, Instrumentation, and Computers, 32, 396-402.
 
-Velicer, W. F. (1976). Determining the number of factors from the matrix
-of partial correlations. Psychometrika, 41, 321-327.
+  Velicer, W. F. (1976). Determining the number of factors from the
+  matrix of partial correlations. Psychometrika, 41, 321-327.
 
-Velicer, W. F., Eaton, C. A., & Fava, J. L. (2000). Construct
+  Velicer, W. F., Eaton, C. A., & Fava, J. L. (2000). Construct
   explication through factor or component analysis: A review and
   evaluation of alternative procedures for determining the number of
   factors or components. In R. D. Goffin & E. Helmes (Eds.), Problems
   and solutions in human assessment: Honoring Douglas N. Jackson at
   seventy (pp. 41-72). Norwell, MA: Kluwer Academic.
 }
+
 \keyword{PARALLEL ANALYSIS}
 \keyword{POLYCHORIC CORRELATION MATRIX}
 \keyword{EXPLORATORY FACTOR ANALYSIS}
+
