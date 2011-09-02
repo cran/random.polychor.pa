@@ -21,18 +21,18 @@ flush(stderr()); flush(stdout())
 
 ### EXAMPLE 1:
 ### example data
-raw.data<-data.frame(ss=1:10, v1=c(1,2,2,1,2,2,2,1,2,1), 
-                              v2=c(2,3,3,2,3,3,1,2,3,1), 
-                              v3=c(2,4,2,3,3,2,1,3,2,4),
-                              v4=c(3,1,3,2,3,2,3,2,2,3),
-                              v5=c(3,1,4,5,3,4,3,4,2,5))
+raw.data<-data.frame(ss=1:20, v1=c(1,5,2,1,4,3,2,1,2,5,1,5,2,4,2,2,2,5,4,3),
+v2=c(5,3,3,2,3,1,1,2,3,5,2,5,5,4,4,5,3,4,2,1),
+v3=c(2,4,2,3,3,2,1,3,2,4,1,2,2,2,4,4,5,1,2,1),
+v4=c(3,1,3,2,5,2,3,5,2,3,5,5,5,4,3,3,2,3,3,1),
+v5=c(3,1,4,5,3,4,3,4,2,5,1,2,1,2,1,4,2,2,4,3))
+
 raw.item.data <- (raw.data[,2:6])
 summary (raw.item.data)
 cor(raw.item.data)
 eigen(cor(raw.item.data))
 
 random.polychor.pa(nrep=5, data.matrix=raw.item.data, q.eigen=.99)
-
 
 ### EXAMPLE 2a:
 ### this example is particularly instructive on how the solution may

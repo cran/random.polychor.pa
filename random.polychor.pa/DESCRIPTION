@@ -1,7 +1,7 @@
 Package: random.polychor.pa
 Type: Package
 Title: A Parallel Analysis With Polychoric Correlation Matrices
-Version: 1.1.3
+Version: 1.1.3.1
 Date: 2011-09-02
 Author: Fabio Presaghi & Marta Desimoni
 Maintainer: Fabio Presaghi <fabio.presaghi@uniroma1.it>
@@ -38,7 +38,9 @@ Description: The Function performs a parallel analysis using simulated
 Depends: psych, nFactors
 LazyLoad: yes
 LazyData: yes
-License: GPL (>=2)
+License: GPL (>= 2)
 Encoding: latin1
-Packaged: 2011-09-04 15:26:06 UTC; root
-Built: R 2.13.1; ; 2011-09-05 07:54:46 UTC; unix
+Packaged: 2011-09-05 08:03:52 UTC; root
+Repository: CRAN
+Date/Publication: 2011-09-05 19:37:48
+Built: R 2.13.2; ; 2011-11-07 07:44:20 UTC; unix
