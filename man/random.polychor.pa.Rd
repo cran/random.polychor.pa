@@ -250,18 +250,19 @@ eigen(cor(raw.item.data))
 
 random.polychor.pa(nrep=5, data.matrix=raw.item.data, q.eigen=.99)
 
+####################: NOT TO RUN
 ### EXAMPLE 2a:
 ### this example is particularly instructive on how the solution may
 ### change by changing the type of correlation, method of extraction and
 ### method of selection.
 ### Before launching the example consider that the
 ### ESTIMATED TIME TO COMPLETE THE SIMULATION IS ABOUT: 10 MIN.
-require(psych)
-data(bfi)
-raw.data<-as.matrix(bfi)
-raw.data <- (raw.data[1:100,2:6])
-test.1<-random.polychor.pa(nrep=3, data.matrix=raw.data, q.eigen=.99)
-test.1
+#require(psych)
+#data(bfi)
+#raw.data<-as.matrix(bfi)
+#raw.data <- (raw.data[1:100,2:6])
+#test.1<-random.polychor.pa(nrep=3, data.matrix=raw.data, q.eigen=.99)
+#test.1
 
 ### EXAMPLE 2b:
 ### in this example one of the categories of item1 is recoded: 2=1
@@ -269,13 +270,13 @@ test.1
 ### category 1 is within brackets as it has frequency=0
 ### so this is a case where empirical data (0 2 3 4 5 6) diverge from
 ### theorethical data (0 1 2 3 4 5 6)
-require(psych)
-data(bfi)
-raw.data.1<-as.matrix(bfi)
-raw.data.1 <- (raw.data.1[1:100,1:25])
-for(i in 1:nrow(raw.data.1)) { if(raw.data.1[i,1]==2) raw.data.1[i,1]<-1} 
-test.2<-random.polychor.pa(nrep=3, data.matrix=raw.data.1, q.eigen=.99)
-test.2
+#require(psych)
+#data(bfi)
+#raw.data.1<-as.matrix(bfi)
+#raw.data.1 <- (raw.data.1[1:100,1:25])
+#for(i in 1:nrow(raw.data.1)) { if(raw.data.1[i,1]==2) raw.data.1[i,1]<-1} 
+#test.2<-random.polychor.pa(nrep=3, data.matrix=raw.data.1, q.eigen=.99)
+#test.2
 
 ### EXAMPLE 2c:
 ### in this example one of the categories of item1 is recoded: 1=0

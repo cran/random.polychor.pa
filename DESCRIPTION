@@ -1,8 +1,8 @@
 Package: random.polychor.pa
 Type: Package
 Title: A Parallel Analysis With Polychoric Correlation Matrices
-Version: 1.1.3.2
-Date: 2011-09-02
+Version: 1.1.3.3
+Date: 2013-03-03
 Author: Fabio Presaghi & Marta Desimoni
 Maintainer: Fabio Presaghi <fabio.presaghi@uniroma1.it>
 Description: The Function performs a parallel analysis using simulated
@@ -24,23 +24,24 @@ Description: The Function performs a parallel analysis using simulated
         variables with ordered categories) are present and may cause an
         error when the Pearson correlation matrix is calculated.
         Version 1.1.2 simply has updated the function that calculates
-        the polycoric correlation matrix due to changes in the psych()
+        the polychoric correlation matrix due to changes in the psych()
         package. Version 1.1.3 tackles two problems signalled by users:
         1) the possibility to make available the results of simulation
-        for plotting them in other softwares. Now the
-        random.polychor.pa will show, upon request, all the data used
-        in the scree-plot.  2) The function polichoric() of the psych()
-        package does not handle data matrices that include 0 as
-        possible category and will cause the function to stop with
-        error. So a check for the detection of the 0 code within the
-        provided data.matrix is now added and will cause the
-        random.polychor.pa function to stop with a warning message.
+        for plotting them in other software. Now the random.polychor.pa
+        will show, upon request, all the data used in the scree-plot.
+        2) The function polichoric() of the psych() package does not
+        handle data matrices that include 0 as possible category and
+        will cause the function to stop with error. So a check for the
+        detection of the 0 code within the provided data.matrix is now
+        added and will cause the random.polychor.pa function to stop
+        with a warning message.
 Depends: psych, nFactors, mvtnorm, MASS, boot, lattice, polycor,
         sfsmisc
 LazyLoad: yes
 LazyData: yes
 License: GPL (>= 2)
 Encoding: latin1
-Packaged: 2011-12-28 14:57:59 UTC; root
+Packaged: 2013-03-04 08:41:05 UTC; fabio
 Repository: CRAN
-Date/Publication: 2011-12-30 11:23:09
+Date/Publication: 2013-03-04 09:53:31
+NeedsCompilation: no
