@@ -4,14 +4,4 @@
 # Export all names
 exportPattern(".")
 
-# Import all packages listed as Imports or Depends
-import(
-  psych,
-  nFactors,
-  mvtnorm,
-  MASS,
-  boot,
-  lattice,
-  polycor,
-  sfsmisc
-)
+import(mvtnorm, MASS, sfsmisc, nFactors, psych)

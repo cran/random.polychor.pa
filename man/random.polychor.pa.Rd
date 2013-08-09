@@ -241,14 +241,14 @@ raw.data<-data.frame(ss=1:20, v1=c(1,5,2,1,4,3,2,1,2,5,1,5,2,4,2,2,2,5,4,3),
 v2=c(5,3,3,2,3,1,1,2,3,5,2,5,5,4,4,5,3,4,2,1),
 v3=c(2,4,2,3,3,2,1,3,2,4,1,2,2,2,4,4,5,1,2,1),
 v4=c(3,1,3,2,5,2,3,5,2,3,5,5,5,4,3,3,2,3,3,1),
-v5=c(3,1,4,5,3,4,3,4,2,5,1,2,1,2,1,4,2,2,4,3))
+v5=c(3,1,4,5,3,4,3,4,2,5,1,2,1,2,1,4,2,2,4,3)) 
 
-raw.item.data <- (raw.data[,2:6])
-summary (raw.item.data)
-cor(raw.item.data)
-eigen(cor(raw.item.data))
+raw.item.data <- (raw.data[,2:6]) # subset of data including only items
+summary (raw.item.data)           # summary of variables
+cor(raw.item.data)                # correlation matrix
+eigen(cor(raw.item.data))         # decomposing corr. matrix into eigenvalues and eigenvectors
 
-random.polychor.pa(nrep=5, data.matrix=raw.item.data, q.eigen=.99)
+random.polychor.pa(nrep=5, data.matrix=raw.item.data, q.eigen=.99) # parallel analysis
 
 ####################: NOT TO RUN
 ### EXAMPLE 2a:
