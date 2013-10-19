@@ -1,4 +1,4 @@
-random.polychor.pa <- function (nvar = "NULL", n.ss = "NULL", nrep, nstep = "NULL", data.matrix, q.eigen, r.seed = "NULL") 
+random.polychor.pa <- function (nvar = "NULL", n.ss = "NULL", nrep, nstep = "NULL", data.matrix, q.eigen, r.seed = "NULL", diff.fact="FALSE") 
 {
     start.t <- Sys.time()
     cat("computation starts at:", format(start.t, "%X"), "\n", "\n")
@@ -83,19 +83,6 @@ random.polychor.pa <- function (nvar = "NULL", n.ss = "NULL", nrep, nstep = "NUL
     flush.console()
     cat("\n")
 
-    for(j in 1:ncol(data.matrix)) {
-      for(i in 1:nrow(data.matrix)) {
-        if(data.matrix[i,j]==0) {
-          cat("\n", "### WARNING: by inspecting the supplied data.matrix the function has detected an item with an ordered category coded as 0", "\n")
-          cat(" ### The presence of a category 0 will cause the function polychoric() to stop with error", "\n")
-          cat(" ### In order to proceed, all items with a category coded as 0 need to be recoded", "\n")
-          cat(" ### The execution of function will now be stopped", "\n")
-          stop()
-        }
-        else{}
-      }
-    } # ispeziona la matrice e se trova 0 ricodifca la scala aggiungendo +1
-
 
     item.tab <- as.matrix(item.tab)
     if (!is.null(dimnames(item.tab))) {
@@ -103,10 +90,7 @@ random.polychor.pa <- function (nvar = "NULL", n.ss = "NULL", nrep, nstep = "NUL
         item.tab
     }
     else{}
-
-    require(psych, quietly=TRUE)
-    require(nFactors, quietly=TRUE)
-
+    
     eigen.data <- matrix(0, nvar, nrep)
     eigen.data1 <- matrix(0, nvar, nrep)
     eigen.data.pca <- matrix(0, nvar, nrep)
@@ -115,17 +99,62 @@ random.polychor.pa <- function (nvar = "NULL", n.ss = "NULL", nrep, nstep = "NUL
     f1.cor <- matrix(0, nvar, )
     st.matrix <- matrix(0, nvar, 15)
     st.matrix.pca <- matrix(0, nvar, 15)
+
+    ### just for printing
+    for (g in 1:nvar) {
+      ### START: loop for each variable
+      for (q in 1:length(table(data.matrix[,g]))){
+        p.val<-table(data.matrix[,g])[q]/n.ss
+        categ<-q-1
+        item<-g
+        terna<-cbind(p.val,categ,item)
+        if(g==1 & q==1){
+          peso<-terna
+        }
+        else {
+          peso<-rbind(peso, terna)
+        }
+      }
+    }
+    cat("\nThe diff.fact paramether is set to TRUE, so random dataset will be\n")
+    cat("simulated by taking into account the weights of each category for each variable\n")
+    cat("within the provided dataset. Weights are listed in the following table:\n\n")
+    colnames(peso)<-c("p-value", "cateogry", "variable")
+    print(peso)
+    cat("\n\n")
+        
     for (j in 1:nrep) {
         matrix.3 <- matrix(0, n.ss, nvar)
         u <- 1
         t <- 1
-        while (u <= nrow(item.tab)) {
+        if(diff.fact=="TRUE"){
+          ### calculating p-value for each item: POLYTHOMOUS
+          for (q in 1:nvar) {
+            ### START: loop for each variable
+            peso<-matrix(,length(table(data.matrix[,q])),3)
+            for (p in 1:length(table(data.matrix[,q]))){
+              peso[p,1]<-table(data.matrix[,q])[p]/n.ss
+              peso[p,2]<-p-1
+            }
+            if (length(table(data.matrix[,q])) == 2) {
+              matrix.3[,q]<-sample(x=peso[,2], size = n.ss, replace = TRUE, prob=peso[,1])
+            }
+            else{
+              matrix.3[,q]<-sample(x=peso[,2]+1, size = n.ss, replace = TRUE, prob=peso[,1])              
+            }
+            ### END: for each item
+          }
+        }
+        else {
+          while (u <= nrow(item.tab)) {
             for (z in 1:(item.tab[u, 1])) {
-                matrix.3[, t] <- round(runif(n.ss, min = 1, max = item.tab[u, 2]))
-                if (t < sum(item.tab[, 1])) t <- t + 1
+              matrix.3[, t] <- round(runif(n.ss, min = 1, max = item.tab[u, 2]))
+              if (t < sum(item.tab[, 1])) t <- t + 1
             }
             u <- u + 1
+          }
         }
+        print(head(matrix.3))
         f1.poly.cor <- polychoric(matrix.3, polycor = TRUE)$rho
         f1.cor <- cor(matrix.3)
         eigen.data[, j] <- eigen(corFA(f1.poly.cor))$values
@@ -241,7 +270,10 @@ random.polychor.pa <- function (nvar = "NULL", n.ss = "NULL", nrep, nstep = "NUL
             }
             else{}
         }
-        cat("******* RESULTS:", "\n")
+        if (diff.fact==TRUE){
+          cat("\n******* RESULTS (diff.fact==T):", "\n")          
+        }
+        cat("\n******* RESULTS:", "\n")
         cat("# of factors (PCA) for Velicer MAP criterium (Polychoric corr): ", nfactors.map, "\n")
         cat("# of factors (PCA) for Velicer MAP(4th power)(Polychoric corr): ", nfactors4.map, "\n")
         cat("# of factors (PCA) for Velicer MAP criterium (Pearson corr)...: ", nfactors.map1, "\n")
@@ -304,8 +336,14 @@ random.polychor.pa <- function (nvar = "NULL", n.ss = "NULL", nrep, nstep = "NUL
         coin.pca <- st.matrix.pca[righetta.pca, 15]
         righetta.pca <- righetta.pca + 1
     }
+    if(diff.fact==TRUE) {
+      text.title<-c("Parallel Analysis: diff.fact")
+    }
+    else {
+      text.title<-c("Parallel Analysis")
+    }
 
-    plot(st.matrix[, 5], st.matrix[, 10], type = "b", xlim = c(1, max(st.matrix[, 5])), ylim = c((min(st.matrix)), (max(st.matrix[, c(4, 9, 10, 11)]))), xlab = "# factors", ylab = "eigenvalues", main = "Parallel Analysis")
+    plot(st.matrix[, 5], st.matrix[, 10], type = "b", xlim = c(1, max(st.matrix[, 5])), ylim = c((min(st.matrix)), (max(st.matrix[, c(4, 9, 10, 11)]))), xlab = "# factors", ylab = "eigenvalues", main = text.title)
     points(st.matrix[, 5], st.matrix[, 4], type = "b", pch = 8)
     points(st.matrix[, 5], st.matrix[, 11], type = "b", pch = 20, col = "red")
     points(st.matrix[, 5], st.matrix[, 9], type = "b", pch = 2, col = "red")
@@ -317,7 +355,10 @@ random.polychor.pa <- function (nvar = "NULL", n.ss = "NULL", nrep, nstep = "NUL
     res1.pca <- (nr_fact1.pca - 1)
     ris <- paste("# factors with Polyc.PA: ", res, sep = "")
     ris1 <- paste("# factors with Pear.PA: ", res1, sep = "")
-    legend(x = "topright", c("Polychoric corr. Empirical FA", "Pearson corr. Empirical FA", perc, perc1, ris, ris1), col = c(1, 2, 1, 2, 1, 2), pch = c(1, 20, 8, 2))
+
+    legend(3.6,0.75, c("Polychoric corr. Empirical FA", "Pearson corr. Empirical FA", perc, perc1, ris, ris1), 
+           col = c(1, 2, 1, 2, 1, 2), pch = c(1, 20, 8, 2), y.intersp=0.3, cex=0.95)
+    
     abline(h = 1)
     abline(h = 0)
 

@@ -1,11 +1,11 @@
 Package: random.polychor.pa
 Type: Package
 Title: A Parallel Analysis With Polychoric Correlation Matrices
-Version: 1.1.3.4
-Date: 2013-08-09
+Version: 1.1.3.5
+Date: 2013-10-19
 Author: Fabio Presaghi & Marta Desimoni
 Maintainer: Fabio Presaghi <fabio.presaghi@uniroma1.it>
-Description: The Function performs a parallel analysis using simulated
+Description: The Function performs a parallel analysis using simulated 
         polychoric correlation matrices. The nth-percentile of the
         eigenvalues distribution obtained from both the randomly
         generated and the real data polychoric correlation matrices is
@@ -34,13 +34,18 @@ Description: The Function performs a parallel analysis using simulated
         will cause the function to stop with error. So a check for the
         detection of the 0 code within the provided data.matrix is now
         added and will cause the random.polychor.pa function to stop
-        with a warning message.
+        with a warning message. In version 1.1.3.5 a paramether was added 
+        (diff.fact) in order to simulate random dataset with the same 
+        probability of observing each category for each variable as that 
+        observed in the provided (empirical) dataset. Finally the search 
+        for zeroes within the provided datafile was removed, so data 
+        with zeroes are now accepted. 
 Depends: psych, nFactors, mvtnorm, MASS, sfsmisc
 LazyLoad: yes
 LazyData: yes
 License: GPL (>= 2)
 Encoding: latin1
-Packaged: 2013-08-09 17:12:42 UTC; fabio
+Packaged: 2013-10-19 09:38:47 UTC; fabio
 Repository: CRAN
-Date/Publication: 2013-08-09 19:56:00
+Date/Publication: 2013-10-19 12:12:02
 NeedsCompilation: no
