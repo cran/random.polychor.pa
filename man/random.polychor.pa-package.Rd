@@ -18,53 +18,16 @@
   \tabular{ll}{
     Package: \tab random.polychor.pa\cr
     Type: \tab Package\cr
-    Version: \tab 1.1.3.5\cr
-    Date: \tab 2013-10-19\cr
+    Version: \tab 1.1.3.6\cr
+    Date: \tab 2013-10-21\cr
     License: \tab GPL Version 2 or later\cr
     LazyLoad: \tab yes\cr
 }
-The function perform a parallel analysis (Horn, 1965) using randomly 
-simulated polychoric correlations. Generates nrep random samples of 
-the same dimension of the empirical provided data.matrix(i.e, with 
-the same number of participants and of variables). Items are allowed 
-to have varying number of categories. The function will extract the 
-eigenvalues from each randomly generated polychoric matrices and the 
-declared quantile will be extracted. Eigenvalues from polychoric 
-correlation matrix obtained from real data are also computed and compared, 
-in a (scree) plot, with the eigenvalues extracted from the simulation 
-(Polychoric matrices). Recently Cho, Li & Bandalos (2009), showed that 
-in using PA method, it is important to match the type of the correlation 
-matrix used to recover the eigenvalues from real data with the type of 
-correlation matrix used to estimate random eigenvalues. Crossing the type 
-of correlations (using Polychoric correlation matrix to estimate real 
-eigenvalues and random simulated Pearson correlation matrice) may result 
-in a wrong decision (i.e., retaining less non-random factors than the 
-needed). A comparison with eigenvalues extracted from both randomly 
-simulated Pearson correlation matrices and real data is also also 
-included. Finally, for both type of correlation matrix (Polychoric vs 
-Pearson), the two versions (the classic squared coefficient and the 4th 
-power coefficient) of Velicer's MAP criterion are calculated. In version 
-1.1.1, a minor bug in the regarding the estimated time needed to complete 
-the simulation is fixed. Also in this version, the function is now able 
-to manage supplied data.matrix in which variables representing factors 
-(i.e., variables with ordered categories) are present and may cause an 
-error when the Pearson correlation matrix is calculated. As the poly.mat() 
-function used to calculate the polychoric correlation matrix is going to 
-be deprecated in favour of polychoric() function, the random.polychor.pa 
-was consequently updated (version 1.1.2) to account for changes in psych() 
-package.  Version 1.1.3 tackles two problems signalled by users: 1) the 
-possibility to make available the results of simulation for plotting them 
-in other softwares. Now the random.polychor.pa will show, upon request, 
-all the data used in the scree-plot. 2) The function polichoric() of the 
-psych() package does not handle data matrices that include 0 as possible 
-category and will cause the function to stop with error. So a check for 
-the detection of the 0 code within the provided data.matrix is now added 
-and will cause the random.polychor.pa function to stop with a warning 
-message. In version 1.1.3.5 a paramether was added (diff.fact) in order 
-to simulate random dataset with the same probability of observing each 
-category for each variable as that observed in the provided (empirical) 
-dataset. Finally the search for zeroes within the provided datafile was 
-removed, so data with zeroes are now accepted. 
+The function perform a parallel analysis (Horn, 1965) using randomly simulated polychoric correlations. Generates nrep random samples of the same dimension of the empirical provided data.matrix(i.e, with the same number of participants and of variables). Items are allowed to have varying number of categories. The function will extract the eigenvalues from each randomly generated polychoric matrices and the declared quantile will be extracted. Eigenvalues from polychoric correlation matrix obtained from real data are also computed and compared, in a (scree) plot, with the eigenvalues extracted from the simulation (Polychoric matrices). Recently Cho, Li & Bandalos (2009), showed that in using PA method, it is important to match the type of the correlation matrix used to recover the eigenvalues from real data with the type of correlation matrix used to estimate random eigenvalues. Crossing the type of correlations (using Polychoric correlation matrix to estimate real eigenvalues and random simulated Pearson correlation matrice) may result in a wrong decision (i.e., retaining less non-random factors than the needed). A comparison with eigenvalues extracted from both randomly simulated Pearson correlation matrices and real data is also also 
+included. Finally, for both type of correlation matrix (Polychoric vs Pearson), the two versions (the classic squared coefficient and the 4th power coefficient) of Velicer's MAP criterion are calculated. In version 1.1.1, a minor bug in the regarding the estimated time needed to complete the simulation is fixed. Also in this version, the function is now able to manage supplied data.matrix in which variables representing factors (i.e., variables with ordered categories) are present and may cause an 
+error when the Pearson correlation matrix is calculated. As the poly.mat() function used to calculate the polychoric correlation matrix is going to be deprecated in favour of polychoric() function, the random.polychor.pa was consequently updated (version 1.1.2) to account for changes in psych() package.  Version 1.1.3 tackles two problems signalled by users: 1) the possibility to make available the results of simulation for plotting them in other softwares. Now the random.polychor.pa will show, upon request, 
+all the data used in the scree-plot. 2) The function polichoric() of the psych() package does not handle data matrices that include 0 as possible category and will cause the function to stop with error. So a check for the detection of the 0 code within the provided data.matrix is now added and will cause the random.polychor.pa function to stop with a warning message. In version 1.1.3.5 a paramether was added (diff.fact) in order to simulate random dataset with the same probability of observing each category for each variable as that observed in the provided (empirical) 
+dataset. Finally the search for zeroes within the provided datafile was removed, so data with zeroes are now accepted. In version 1.1.3.6 a check for the range of quantile (beteen 0 and 1) was added. 
 }
 \author{
   Fabio Presaghi \email{fabio.presaghi@uniroma1.it} and Marta Desimoni

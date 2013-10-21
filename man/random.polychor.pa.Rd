@@ -58,67 +58,15 @@ default value is FALSE and in this case the function will estimate random datase
 }
 }
 \details{
-The function perform a parallel analysis (Horn, 1976) using randomly 
-simulated polychoric correlations. Generates nrep random samples of 
-simulated data with the same number of participants and of variables 
-of the provided data.matrix. The function will read the entered data.matrix 
-and extracts: the number of units (i.e., number of rows); the number of 
-variables (i.e., number of columns); and the number of categories of each 
-item. From version 1.1, the function accepts also variables with varying 
-number of categories (e.g., three items with only two categories and two 
-items with three categories, etc.). In version 1.1.1, the function is also 
-able to manage supplied data.matrix in which variables represent factors 
-(i.e., variables with ordered categories) may cause an error when the 
-Pearson correlation matrix is calculated. The information in the supplied 
-data.matrix are used to generate the nrep random raw datasets with the same 
-characteristics of the original real data set. So only three information are 
-needed for the problem to run: the number of replications (nrep), the data 
-matrix (data.matrix) and the percentile to be used (q.eigen). A check for 
-missing values within the real dataset is present and if present will be 
-treated LISTWISE. In this case a warning message will prompt the user 
-signalling how NA were treated (LISTWISE is by now the only treatment 
-considered) and the new sample size. No further checks are made on the 
-raw data, so out-of-range values are not detected and it is on the behalf 
-of the user to make a preliminary check on the reliability of data. A table 
-summarizing the groups of items with different number of categories will be 
-shown along with the main results of the PA. The function will extract the 
-eigenvalues from each randomly generated polychoric matrices and the 
-requested percentile is returned. Eigenvalues from polychoric correlation 
-matrix obtained from real data is also compute and  compared, in a (scree) 
-plot, with the eigenvalues extracted from the simulation (Polychoric 
-matrices). Recently, Cho, Li & Bandalos (2009) showed that, in using PA 
-method, it is important to match the type of the correlation matrix used 
-to recover the eigenvalues from real data with the type of correlation 
-matrix used to estimate random eigenvalues. Crossing the type of 
-correlations (using Polychoric correlation matrix to estimate real 
-eigenvalues and random simulated Pearson correlation matrices) may result 
-in a wrong decision (i.e., retaining more non-random factors than the 
-needed). A comparison with eigenvalues extracted from both randomly 
-simulated Pearson correlation matrices and real data is also included. 
-Finally, for both type of correlation matrix (Polychoric vs Pearson), 
-the two versions (the classic squared coefficient and the 4th power 
-coefficient) of   Velicer's MAP criterion are calculated (Velicer, 1976; 
-Velicer, Eaton, & Fava, 2000) by implementing under R the code released 
-by O'Connor (2000) for SPSS, SAS and MATLAB. As the poly.mat() function 
-used to calculate the polychoric correlation matrix is going to be 
-deprecated in favour of polychoric() function, the random.polychor.pa was 
-consequently updated (version 1.1.2) to account for changes in psych() 
-package. Version 1.1.3 tackles two problems signalled by users: 1) the 
-possibility to make available the results of simulation for plotting them 
-in other softwares. Now the random.polychor.pa will show, upon request, 
-all the data used in the scree-plot. 2) The function polichoric() of the 
-psych() package does not handle data matrices that include 0 as possible 
-category and will cause the function to stop with error. So a check for 
-the detection of the 0 code within the provided data.matrix is now added 
-and will cause the random.polychor.pa function to stop with a warning 
-message. In version 1.1.3.5 a paramether was added (diff.fact) in order 
-to simulate random dataset with the same probability of observing each 
-category for each variable as that observed in the provided (empirical) 
-dataset. This paramether was added for those reaserchers that want to 
-replicate random datasets with the same distribution of item difficulties
-as the real data (Reckase, 2009, pp.216). Finally the search for zeroes 
-within the provided datafile was removed, so data with zeroes are now 
-accepted.      
+The function perform a parallel analysis (Horn, 1976) using randomly simulated polychoric correlations. Generates nrep random samples of simulated data with the same number of participants and of variables of the provided data.matrix. The function will read the entered data.matrix and extracts: the number of units (i.e., number of rows); the number of variables (i.e., number of columns); and the number of categories of each item. From version 1.1, the function accepts also variables with varying 
+number of categories (e.g., three items with only two categories and two items with three categories, etc.). In version 1.1.1, the function is also able to manage supplied data.matrix in which variables represent factors (i.e., variables with ordered categories) may cause an error when the Pearson correlation matrix is calculated. The information in the supplied data.matrix are used to generate the nrep random raw datasets with the same characteristics of the original real data set. So only three information are needed for the problem to run: the number of replications (nrep), the data matrix (data.matrix) and the percentile to be used (q.eigen). A check for missing values within the real dataset is present and if present will be 
+treated LISTWISE. In this case a warning message will prompt the user signalling how NA were treated (LISTWISE is by now the only treatment considered) and the new sample size. No further checks are made on the raw data, so out-of-range values are not detected and it is on the behalf of the user to make a preliminary check on the reliability of data. A table summarizing the groups of items with different number of categories will be shown along with the main results of the PA. The function will extract the eigenvalues from each randomly generated polychoric matrices and the 
+requested percentile is returned. Eigenvalues from polychoric correlation matrix obtained from real data is also compute and  compared, in a (scree) plot, with the eigenvalues extracted from the simulation (Polychoric matrices). Recently, Cho, Li & Bandalos (2009) showed that, in using PA method, it is important to match the type of the correlation matrix used to recover the eigenvalues from real data with the type of correlation matrix used to estimate random eigenvalues. Crossing the type of 
+correlations (using Polychoric correlation matrix to estimate real eigenvalues and random simulated Pearson correlation matrices) may result in a wrong decision (i.e., retaining more non-random factors than the needed). A comparison with eigenvalues extracted from both randomly simulated Pearson correlation matrices and real data is also included. Finally, for both type of correlation matrix (Polychoric vs Pearson), 
+the two versions (the classic squared coefficient and the 4th power coefficient) of   Velicer's MAP criterion are calculated (Velicer, 1976; Velicer, Eaton, & Fava, 2000) by implementing under R the code released by O'Connor (2000) for SPSS, SAS and MATLAB. As the poly.mat() function used to calculate the polychoric correlation matrix is going to be deprecated in favour of polychoric() function, the random.polychor.pa was 
+consequently updated (version 1.1.2) to account for changes in psych() package. Version 1.1.3 tackles two problems signalled by users: 1) the possibility to make available the results of simulation for plotting them in other softwares. Now the random.polychor.pa will show, upon request, all the data used in the scree-plot. 2) The function polichoric() of the psych() package does not handle data matrices that include 0 as possible category and will cause the function to stop with error. So a check for the detection of the 0 code within the provided data.matrix is now added 
+and will cause the random.polychor.pa function to stop with a warning message. In version 1.1.3.5 a paramether was added (diff.fact) in order to simulate random dataset with the same probability of observing each category for each variable as that observed in the provided (empirical) dataset. This paramether was added for those reaserchers that want to replicate random datasets with the same distribution of item difficulties as the real data (Reckase, 2009, pp.216). Finally the search for zeroes 
+within the provided datafile was removed, so data with zeroes are now accepted. In version 1.1.3.6 a check for the range of quantile (beteen 0 and 1) was added.
 }
 \value{
   The function returns the number of factors for Polychoric and Pearson 
