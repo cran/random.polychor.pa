@@ -1,6 +1,7 @@
-52bc8f65c46604d3fd0a2a1c8a6ee20b *DESCRIPTION
-a50e20aab176dcb478d3916ea4c6937b *NAMESPACE
-ec3321b0078849cafefaa0683951c0ee *R/random.polychor.pa.r
+b6167bc46170a2ab681f6f56ee79718c *DESCRIPTION
+ffa387b92be47612d9f30aa3ec8c808e *NAMESPACE
+d74d4423e9e16f360259b7c052134dff *R/random.polychor.pa.r
 121ae882a463727e2fc07171006825b3 *inst/CITATION
-fcf1623719a140a095859caaa25cc86c *man/random.polychor.pa-package.Rd
-62d1b58411d2f6f5edcbb9d1e7e5e815 *man/random.polychor.pa.Rd
+bf502d1f7aff41a1eb915a1cd958b127 *man/NEWS.Rd
+7fda654ba70a5cf94d34df4a1315a927 *man/random.polychor.pa-package.Rd
+77014c5283950bb887329b207d2e62bc *man/random.polychor.pa.Rd

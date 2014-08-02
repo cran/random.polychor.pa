@@ -4,4 +4,11 @@
 # Export all names
 exportPattern(".")
 
-import(mvtnorm, MASS, sfsmisc, nFactors, psych)
+import(boot)
+import(mvtnorm)
+import(MASS) 
+import(sfsmisc) 
+importFrom("nFactors", corFA, parallel) 
+importFrom("psych", fa, polychoric)
+
+
