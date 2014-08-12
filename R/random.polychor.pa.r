@@ -282,7 +282,7 @@ random.polychor.pa <- function (nvar = "NULL", n.ss = "NULL", nrep, nstep = "NUL
         
         for (j in 1:nrep) {
           matrix.3<-sim.random.matrix()
-          f1.poly.cor <- suppressMessages(polychoric(matrix.3, polycor = TRUE, global=FALSE)$rho)   # simulated polychoric corr
+          f1.poly.cor <- suppressMessages(polychoric(matrix.3, global=FALSE)$rho)   # simulated polychoric corr
           f1.cor <- cor(matrix.3)   # simulated pearson corr
           eigen.data[, j] <- eigen(corFA(f1.poly.cor))$values
           eigen.data1[, j] <- eigen(corFA(f1.cor))$values
@@ -326,7 +326,7 @@ random.polychor.pa <- function (nvar = "NULL", n.ss = "NULL", nrep, nstep = "NUL
         
         for (j in 1:nrep) {
           matrix.3<-sim.random.matrix()
-          f1.poly.cor <- suppressMessages(polychoric(matrix.3, polycor = TRUE, global=FALSE)$rho)   # simulated polychoric corr
+          f1.poly.cor <- suppressMessages(polychoric(matrix.3, global=FALSE)$rho)   # simulated polychoric corr
           f1.cor <- cor(matrix.3)   # simulated pearson corr
           eigen.data.pca[, j] <- eigen(f1.poly.cor)$values
           eigen.data1.pca[, j] <- eigen(f1.cor)$values
@@ -374,7 +374,7 @@ random.polychor.pa <- function (nvar = "NULL", n.ss = "NULL", nrep, nstep = "NUL
           boot.matrix[,j]<-column[i]
         }
         # cat("\n", "BOOTSTRAP sampled FA eigenvalues from POLYCHORIC correlations", "\n")
-        boot.polyc<-suppressMessages(polychoric(boot.matrix, polycor=TRUE, global=FALSE)$rho) ### polychoric correlation
+        boot.polyc<-suppressMessages(polychoric(boot.matrix, global=FALSE)$rho) ### polychoric correlation
         eigen.polyc.fa<-eigen(corFA(boot.polyc))$values       ### FA
         return(eigen.polyc.fa)
       }
@@ -386,7 +386,7 @@ random.polychor.pa <- function (nvar = "NULL", n.ss = "NULL", nrep, nstep = "NUL
           boot.matrix[,j]<-column[i]
         }
         # cat("\n", "BOOTSTRAP sampled PCA eigenvalues from POLYCHORIC correlations", "\n")
-        boot.polyc<-suppressMessages(polychoric(boot.matrix, polycor=TRUE, global=FALSE)$rho) ### polychoric correlation
+        boot.polyc<-suppressMessages(polychoric(boot.matrix, global=FALSE)$rho) ### polychoric correlation
         eigen.polyc.pca<-eigen(boot.polyc)$values             ### PCA
         return(eigen.polyc.pca)
       }
@@ -453,7 +453,7 @@ random.polychor.pa <- function (nvar = "NULL", n.ss = "NULL", nrep, nstep = "NUL
     ###### PUT THE FOLLOWING RESULTS IN A NEW NAMED COMMON MATRIX (COMMON TO RANDOM AND BOOSTRAP)
     
     ### COMPUTING EMPIRICAL CORRELATION MATRICES: START 
-    matrix.cor1 <- suppressMessages(polychoric(data.matrix.sub, polycor = TRUE, global=FALSE)$rho)
+    matrix.cor1 <- suppressMessages(polychoric(data.matrix.sub, global=FALSE)$rho)
     matrix.cor2 <- cor(data.matrix.sub)
     ### COMPUTING EMPIRICAL CORRELATION MATRICES: END
     ### COMPUTING EMPIRICAL EIGENVALUES FA/PCA RESULTS: START
