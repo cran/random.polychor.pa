@@ -287,8 +287,8 @@ random.polychor.pa <- function (nvar = "NULL", n.ss = "NULL", nrep, nstep = "NUL
           eigen.data[, j] <- eigen(corFA(f1.poly.cor))$values
           eigen.data1[, j] <- eigen(corFA(f1.cor))$values
           if (j == 1 & w == 1) {
-            end.pt <- Sys.time()
-            estimated.t <- difftime(end.pt, start.t, units="auto")
+            end.pt.fa <- Sys.time()
+            estimated.t <- difftime(end.pt.fa, start.t, units="auto")
             estimated.total <- estimated.t * nrep * sum(dim(table(multi.sample)))
             estimated.t <- as.numeric(estimated.t, units = "secs")
             estimated.total <- as.numeric(estimated.total, units = "secs")
@@ -323,6 +323,7 @@ random.polychor.pa <- function (nvar = "NULL", n.ss = "NULL", nrep, nstep = "NUL
         f1.poly.cor <- matrix(0, nvar.sub, )
         f1.cor <- matrix(0, nvar.sub, )
         pre.st.matrix.pca <- matrix(0, nvar.sub, 9)
+        start.t.pca <- Sys.time()
         
         for (j in 1:nrep) {
           matrix.3<-sim.random.matrix()
@@ -331,8 +332,9 @@ random.polychor.pa <- function (nvar = "NULL", n.ss = "NULL", nrep, nstep = "NUL
           eigen.data.pca[, j] <- eigen(f1.poly.cor)$values
           eigen.data1.pca[, j] <- eigen(f1.cor)$values
           if (j == 1 & w == 1) {
-            end.pt <- Sys.time()
-            estimated.t <- difftime(end.pt, start.t, units="auto")
+            end.pt.pca <- Sys.time()
+#            estimated.t <- difftime(end.pt.pca, start.t, units="auto")
+            estimated.t <- difftime(end.pt.pca, start.t.pca, units="auto")
             estimated.total <- estimated.t * nrep * sum(dim(table(multi.sample)))
             estimated.t <- as.numeric(estimated.t, units = "secs")
             estimated.total <- as.numeric(estimated.total, units = "secs")

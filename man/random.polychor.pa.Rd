@@ -1,6 +1,6 @@
 \name{random.polychor.pa}
 \alias{random.polychor.pa}
-\title{A Parallel Analysis With Randomly Generated Polychoric
+\title{A Parallel Analysis with Randomly Generated Polychoric
   Correlation Matrices
 }
 \description{The function performs a parallel analysis using simulated polychoric correlation matrices. The eigenvalues (extracted following both FA and PCA methods) from each random generated polychoric correlation matrix and from the polychoric correlation matrix of real solutions from Polychorich vs Pearson correlations, FA vs PCA and PA vs MAP are presented. Random data sets are simulated assuming or a uniform or a multinomial distribution or via the bootstrap method of resampling (i.e., random permutations of cases). Also Multigroup Parallel analysis is made available for random (uniform and multinomial distribution and with or without difficulty factor) and bootstrap methods. An option to choose between default or full output is also available as well as a parameter to print Fit Statistics (Chi-squared, TLI, RMSEA, RMR and BIC) for the factor solutions indicated by the Parallel Analysis.
@@ -158,7 +158,7 @@ nFactors, psych, paran
 require(psych)
 data(bfi)
 names(bfi)
-bfi.data<-na.exclude(as.matrix(bfi[1:100, 1:5])) 
+bfi.data<-na.exclude(as.matrix(bfi[1:200, 1:5])) 
 head(bfi.data)
 random.polychor.pa(nrep=3, data.matrix=bfi.data, q.eigen=.99)
 
@@ -171,9 +171,9 @@ random.polychor.pa(nrep=3, data.matrix=bfi.data, q.eigen=.99)
 #require(psych)
 #data(bfi)
 #raw.data.1<-as.matrix(bfi)
-#raw.data.1 <- (raw.data.1[1:100,1:25])
+#raw.data.1 <- (raw.data.1[1:200,1:25])
 #for(i in 1:nrow(raw.data.1)) { if(raw.data.1[i,1]==2) raw.data.1[i,1]<-1} 
-#test.2<-random.polychor.pa(nrep=3, data.matrix=raw.data.1, q.eigen=.99)
+#test.2<-random.polychor.pa(nrep=100, data.matrix=raw.data.1, q.eigen=.99)
 #test.2
 
 ### EXAMPLE 3:
@@ -209,9 +209,9 @@ random.polychor.pa(nrep=3, data.matrix=bfi.data, q.eigen=.99)
 #require(psych)
 #data(bfi)
 #raw.data.4a<-as.matrix(bfi)
-#raw.data.4a <- (raw.data.4a[1:100,1:25])
+#raw.data.4a <- (raw.data.4a[1:200,1:25])
 ### POLYTHOMOUS
-#random.polychor.pa(nrep=3, data.matrix=raw.data.4a, q.eigen=.99, diff.fact=TRUE)
+#random.polychor.pa(nrep=100, data.matrix=raw.data.4a, q.eigen=.99, diff.fact=TRUE)
 
 ### EXAMPLE 5:
 ### RANDOM VS BOOSTRAP SIMULATED DATA
@@ -219,20 +219,20 @@ random.polychor.pa(nrep=3, data.matrix=bfi.data, q.eigen=.99)
 #require(psych)
 #data(bfi)
 #names(bfi)
-#bfi.data<-na.exclude(as.matrix(bfi[1:100, 1:5])) 
+#bfi.data<-na.exclude(as.matrix(bfi[1:200, 1:5])) 
 #head(bfi.data)
 ### RANDOM samples and UNIFORM distribution
-#random.polychor.pa(nrep=10, data.matrix=bfi.data, q.eigen=.95, comparison=c("random"), 
+#random.polychor.pa(nrep=100, data.matrix=bfi.data, q.eigen=.95, comparison=c("random"), 
 #		distr="uniform", fit.pa=T, print.all=T) 
 ### RANDOM samples and MULTINOMIAL distribution
-#random.polychor.pa(nrep=10, data.matrix=bfi.data, q.eigen=.95, comparison=c("random"), 
+#random.polychor.pa(nrep=100, data.matrix=bfi.data, q.eigen=.95, comparison=c("random"), 
 #		distr="multinomial", fit.pa=T, print.all=T) 
 
 ### BOOTSTRAP and UNIFORM distribution
-#random.polychor.pa(nrep=10, data.matrix=bfi.data, q.eigen=.95, comparison=c("bootstrap"), 
+#random.polychor.pa(nrep=100, data.matrix=bfi.data, q.eigen=.95, comparison=c("bootstrap"), 
 #		distr="uniform", fit.pa=T, print.all=T) 
 ### BOOTSTRAP and MULTINOMIAL distribution
-#random.polychor.pa(nrep=10, data.matrix=bfi.data, q.eigen=.95, comparison=c("bootstrap"), 
+#random.polychor.pa(nrep=100, data.matrix=bfi.data, q.eigen=.95, comparison=c("bootstrap"), 
 #		distr="multinomial", fit.pa=T, print.all=T) 
 
 
@@ -244,21 +244,21 @@ random.polychor.pa(nrep=3, data.matrix=bfi.data, q.eigen=.99)
 #table(bfi$gender)
 #table(bfi$education)
 #table(bfi$age)
-#bfi.data.gender<-cbind(bfi[1:100, 26], bfi[1:100, 1:5])
+#bfi.data.gender<-cbind(bfi[1:200, 26], bfi[1:200, 1:5])
 #head(bfi.data.gender)
 
 # MULTIGROUP PARALLEL ANALYSIS: RANDOM UNIFORM
-#random.polychor.pa(nrep=10, data.matrix=bfi.data.gender, q.eigen=.95, comparison=c("random-mg"),
+#random.polychor.pa(nrep=100, data.matrix=bfi.data.gender, q.eigen=.95, comparison=c("random-mg"),
 #		distr="uniform", fit.pa=T, print.all=T) 
 # MULTIGROUP PARALLEL ANALYSIS: RANDOM MULTINOMIAL
-#random.polychor.pa(nrep=10, data.matrix=bfi.data.gender, q.eigen=.95, comparison=c("random-mg"),
+#random.polychor.pa(nrep=100, data.matrix=bfi.data.gender, q.eigen=.95, comparison=c("random-mg"),
 #		distr="multinomial", fit.pa=T, print.all=T) 
 
 # MULTIGROUP PARALLEL ANALYSIS: BOOTSTRAP UNIFORM
-#random.polychor.pa(nrep=10, data.matrix=bfi.data.gender, q.eigen=.95, 
+#random.polychor.pa(nrep=100, data.matrix=bfi.data.gender, q.eigen=.95, 
 #		comparison=c("bootstrap-mg"), distr="uniform", fit.pa=T, print.all=T) 
 # MULTIGROUP PARALLEL ANALYSIS: BOOTSTRAP MULTINOMIAL
-#random.polychor.pa(nrep=10, data.matrix=bfi.data.gender, q.eigen=.95, 
+#random.polychor.pa(nrep=100, data.matrix=bfi.data.gender, q.eigen=.95, 
 #		comparison=c("bootstrap-mg"), distr="multinomial", fit.pa=T, print.all=T) 
 
 
@@ -273,7 +273,7 @@ random.polychor.pa(nrep=3, data.matrix=bfi.data, q.eigen=.99)
 #bfi.data.age<-cbind(raw.data[, 28], raw.data[, 1:10])
 #head(bfi.data.age)
 
-#random.polychor.pa(nrep=10, data.matrix=bfi.data.age, q.eigen=.95, comparison=c("random-mg")) 
+#random.polychor.pa(nrep=100, data.matrix=bfi.data.age, q.eigen=.95, comparison=c("random-mg")) 
 }
 \keyword{PARALLEL ANALYSIS}
 \keyword{POLYCHORIC CORRELATION MATRIX}

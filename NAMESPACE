@@ -10,5 +10,7 @@ import(MASS)
 import(sfsmisc) 
 importFrom("nFactors", corFA, parallel) 
 importFrom("psych", fa, polychoric)
-
+importFrom("graphics", "abline", "legend", "mtext", "par", "plot", "points")
+importFrom("stats", "cor", "na.omit", "quantile", "rmultinom", "runif", "sd")
+importFrom("utils", "capture.output", "flush.console")
 

@@ -11,8 +11,8 @@
   \tabular{ll}{
     Package: \tab random.polychor.pa\cr
     Type: \tab Package\cr
-    Version: \tab 1.1.4-1\cr
-    Date: \tab 2014-08-12\cr
+    Version: \tab 1.1.4-2\cr
+    Date: \tab 2016-07-18\cr
     License: \tab GPL Version 2 or later\cr
     LazyLoad: \tab yes\cr
 }
