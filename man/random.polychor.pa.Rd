@@ -7,7 +7,7 @@
 }
 \usage{random.polychor.pa(nvar="NULL", n.ss="NULL", nrep, nstep="NULL", 
                   data.matrix, q.eigen, r.seed = "NULL", diff.fact=FALSE, distr="NULL", 
-                  comparison = "random", fit.pa=FALSE, print.all=FALSE) 
+                  comparison = "random", fit.pa=FALSE, print.all=FALSE, continuity=0.0) 
 }
 \arguments{
   \item{nvar}{Number of variables (items) in the raw data matrix. From 
@@ -64,6 +64,10 @@ when set to TRUE, the fit statistics (Chi-squared, TLI, RMSEA, RMR, BIC) for all
   \item{print.all}{
 when set to TRUE, all the simulated (random or bootstrap) and empirical eigenvalue distributions will be printed for each samples. When \code{comparison} is equal to \code{bootstrap} or \code{bootstrap-mg} also the bootstrap bias and standard error estimates will be printed. 
 }
+  \item{continuity}{
+by default is set to 0.0 meaning no correction for continuity will be applied. However if needed users may add the correction for continuity by setting the parameter to 0.5 to handle zero count cells. The parameter is passed to the \code{polychoric} function of the \code{psych} package.
+}
+
 }
 
 \details{
@@ -94,6 +98,9 @@ Multigroup version of random uniform samples maybe obtained by setting the param
 Fit statistics (Chi-squared, TLI, RMSEA, RMR, BIC) for all factor solutions indicated by Parallel Analysis are available when the parameter \code{fit.pa} is set to \code{TRUE}. Consider that in estimating the these Fit Statistic indexes not allways converge and this may break the computations for the parallel analysis. In this case switch the parameter off. Moreover the values of these indexes are not allways within the expected range. 
 
 The \code{print.all} parameter when set to  \code{TRUE} will show the tables of eigenvalue distributions for simulated (random or boostrap) and empirical data. For boostrap simulation, also the bias and standard error will be printed. If the \code{diff.fact} is set to \code{TRUE} when random simulations are requested, then also the weighting matrix used to reproduce the item frequencies in random data set will be printed.
+
+The \code{continuity} parameter is passed to \code{polychoric} function to handle the correction for continuity. In \code{polychoric} function this correction for continuity is set by default to .5 (i.e. correct=TRUE). However in some cases this correction for continuity causes the \code{polychorich} function to stop unexpectedly and consequently also \code{random.polychor.pa} function stops unexpectedly. So we added this parameter to allow users to bypass this problem. This parameter is set by default to 0.0 (i.e., no correction for continuity applied) and user may add the correction for continuity by setting the value to 0.5.
+
 }
 \value{
   The default output (\code{print.all=FALSE}) prints the number of factors for Polychoric and Pearson Correlation PA methods for Factor Analysis and Principal Components Analysis (PCA) methods along with the number of factors chosen by the two Velicer's MAP criteria (original and 4th power) for both Polychoric and Pearson correlation matrices. Furthermore, the function will return the (scree) plot of the eigenvalues for real (Polychoric vs Pearson correlation matrices) and simulated data (Polychoric vs Pearson correlation matrices). If the parameter \code{print.all} is set to \code{TRUE} then other than the defaul output, it will also be printed the tables of eigenvalue distributions for simulated (random (uniform or multinomial) or boostrap) and empirical data. For boostrap simulation, also the bias and standard error will be printed. If the \code{diff.fact} is set to \code{TRUE} when random simulations are requested, then also the weighting matrix used to reproduce the item frequencies in random data set will be printed. 
@@ -148,19 +155,21 @@ but simply it does the work.
 }
 
 \seealso{
-nFactors, psych, paran
+\code{nFactors}, \code{psych}, \code{paran}
 }
 \examples{
 ### EXAMPLE 1:
-### this example is particularly instructive on how the solution may
-### change by changing the type of correlation, method of extraction and
-### method of selection.
-require(psych)
+### basic use of the function with a subset of the bfi data from \code{psychTools}
+### number of replications is held at minimum just for running the example. 
+### You would raise this number to consitent values
+# bfi data is attached to the psychTools() package, so if not already loaded, 
+# load the package by running: require(psychTools)
 data(bfi)
 names(bfi)
 bfi.data<-na.exclude(as.matrix(bfi[1:200, 1:5])) 
 head(bfi.data)
 random.polychor.pa(nrep=3, data.matrix=bfi.data, q.eigen=.99)
+
 
 ### EXAMPLE 2:
 ### in this example one of the categories of item1 is recoded: 2=1

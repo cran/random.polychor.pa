@@ -5,14 +5,14 @@
   A Parallel Analysis with Random Polychoric Correlation Matrices
 }
 \description{
-  The function performs a parallel analysis using simulated polychoric correlation matrices. The function will extract the eigenvalues from each random generated polychoric correlation matrix and from the polychoric correlation matrix of real data. A plot comparing eigenvalues   extracted from the specified real data with simulated data will help determine which of real eigenvalue outperform random data. A series of matrices comparing MAP vs PA-Polychoric vs PA-Pearson correlations methods, FA vs PCA solutions are finally presented.
+  The function performs a parallel analysis using simulated polychoric correlation matrices. The function will extract the eigenvalues from each random generated polychoric correlation matrix and from the polychoric correlation matrix of real data. A plot comparing eigenvalues extracted from the specified real data with simulated data will help determine which of real eigenvalue outperform random data. A series of matrices comparing MAP vs PA-Polychoric vs PA-Pearson correlations methods, FA vs PCA solutions are finally presented.
 }
 \details{
   \tabular{ll}{
     Package: \tab random.polychor.pa\cr
     Type: \tab Package\cr
-    Version: \tab 1.1.4-2\cr
-    Date: \tab 2016-07-18\cr
+    Version: \tab 1.1.4-3\cr
+    Date: \tab 2019-12-11\cr
     License: \tab GPL Version 2 or later\cr
     LazyLoad: \tab yes\cr
 }
@@ -26,6 +26,8 @@ Multigroup version of random samples may be obtained by setting the parameter \c
 Fit statistics (Chi-squared, TLI, RMSEA, RMR, BIC) for all factor solutions indicated by Parallel Analysis are available when the parameter \code{fit.pa} is set to \code{TRUE}. Consider that in estimating the these Fit Statistic indexes not allways converge and this may break the computations for the parallel analysis. In this case switch the parameter off. Moreover the values of these indexes are not allways within the expected range. 
 
 The \code{print.all} parameter when set to  \code{TRUE} will show the table of eigenvalue distributions for simulated (random or boostrap) and empirical data. For boostrap simulation, also the bias and standard error will be printed. If the \code{diff.fact} is set to \code{TRUE} when random simulations are requested, then also the weighting matrix used to reproduce the item frequencies in random data set will be printed.
+
+The \code{continuity} parameter is passed to polychoric() function to handle the correction for continuity. In polychoric() function this correction for continuity is set by default to .5 (i.e. correct=TRUE). However in some cases this correction for continuity causes the polychorich() function to stop unexpectedly and consequently also random.polychor.pa() stops. So we added this parameter to allow users to bypass this problem. This parameter is set by default to 0.0 (i.e., no correction for continuity applied) and user may add the correction for continuity by setting the value to 0.5.
 }
 \author{
   Fabio Presaghi \email{fabio.presaghi@uniroma1.it} and Marta Desimoni \email{marta.desimoni@uniroma1.it}
