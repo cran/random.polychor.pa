@@ -7,7 +7,8 @@
 }
 \usage{random.polychor.pa(nvar="NULL", n.ss="NULL", nrep, nstep="NULL", 
                   data.matrix, q.eigen, r.seed = "NULL", diff.fact=FALSE, distr="NULL", 
-                  comparison = "random", fit.pa=FALSE, print.all=FALSE, continuity=0.0) 
+                  comparison = "random", fit.pa=FALSE, print.all=FALSE, continuity=0.0, 
+                  wght="NULL") 
 }
 \arguments{
   \item{nvar}{Number of variables (items) in the raw data matrix. From 
@@ -67,6 +68,9 @@ when set to TRUE, all the simulated (random or bootstrap) and empirical eigenval
   \item{continuity}{
 by default is set to 0.0 meaning no correction for continuity will be applied. However if needed users may add the correction for continuity by setting the parameter to 0.5 to handle zero count cells. The parameter is passed to the \code{polychoric} function of the \code{psych} package.
 }
+  \item{wght}{
+a vector of positive and non-zero weights of the same length of the dataset and with no missing values can be passed to the function in order to compute a weighted polychoric (or pearson) correlation matrix. The default is set to "NULL" meaning that weights are all equal to 1/nrow(data.matrix)
+}
 
 }
 
@@ -93,7 +97,7 @@ In version 1.1.4 was added the possibility to choose between uniform and multino
 
 The default value of the \code{comparison} is set to \code{random} and this means that random uniform samples (\code{runif()}) will be computed. Two types of distribution are available: the uniform distribution and the multinomial distribution (Liu and Rijmen, 2008). To switch between them just set accordingly the parameter \code{distr}. As method of resampling is now also available the bootstrap method that is based on random permutations of cases obtained via the \code{boot()} function. 
 
-Multigroup version of random uniform samples maybe obtained by setting the parameter \code{comparison} to \code{random-mg}. To perform multigroup Parallel Analysis simulating random samples with multinomial distributions the parameter  \code{distr} should be set to \code{multinomial}. Multigroup Parallel Analysis is also available for the bootstrap method by setting the \code{comparison} parameter to \code{bootstrap-mg}. When Multigroup Parallel Analysis is used, the first variable (column) of the dataset should be reserved to the factor used to identify the different samples (i.e., gender, agre groups, nationalities, etc.).  
+Multigroup version of random uniform samples may be obtained by setting the parameter \code{comparison} to \code{random-mg}. To perform multigroup Parallel Analysis simulating random samples with multinomial distributions the parameter  \code{distr} should be set to \code{multinomial}. Multigroup Parallel Analysis is also available for the bootstrap method by setting the \code{comparison} parameter to \code{bootstrap-mg}. When Multigroup Parallel Analysis is used, the first variable (column) of the dataset should be reserved to the factor used to identify the different samples (i.e., gender, agre groups, nationalities, etc.).  
 
 Fit statistics (Chi-squared, TLI, RMSEA, RMR, BIC) for all factor solutions indicated by Parallel Analysis are available when the parameter \code{fit.pa} is set to \code{TRUE}. Consider that in estimating the these Fit Statistic indexes not allways converge and this may break the computations for the parallel analysis. In this case switch the parameter off. Moreover the values of these indexes are not allways within the expected range. 
 
@@ -101,6 +105,7 @@ The \code{print.all} parameter when set to  \code{TRUE} will show the tables of 
 
 The \code{continuity} parameter is passed to \code{polychoric} function to handle the correction for continuity. In \code{polychoric} function this correction for continuity is set by default to .5 (i.e. correct=TRUE). However in some cases this correction for continuity causes the \code{polychorich} function to stop unexpectedly and consequently also \code{random.polychor.pa} function stops unexpectedly. So we added this parameter to allow users to bypass this problem. This parameter is set by default to 0.0 (i.e., no correction for continuity applied) and user may add the correction for continuity by setting the value to 0.5.
 
+The \code{wght} parameter allows to compute a weighted correlation matrix. If a vector of weights is passed to the function, then a weighted polychoric (pearson) correlation matrix will be computed. Also simulated data will be weighted as well as bootstrap samples if select. In case of multisample option, user have to provide a vectors of weights opportunely set accordingly to grouping factor. Weights will affects all indices computed from Parallel Analysis including MAP
 }
 \value{
   The default output (\code{print.all=FALSE}) prints the number of factors for Polychoric and Pearson Correlation PA methods for Factor Analysis and Principal Components Analysis (PCA) methods along with the number of factors chosen by the two Velicer's MAP criteria (original and 4th power) for both Polychoric and Pearson correlation matrices. Furthermore, the function will return the (scree) plot of the eigenvalues for real (Polychoric vs Pearson correlation matrices) and simulated data (Polychoric vs Pearson correlation matrices). If the parameter \code{print.all} is set to \code{TRUE} then other than the defaul output, it will also be printed the tables of eigenvalue distributions for simulated (random (uniform or multinomial) or boostrap) and empirical data. For boostrap simulation, also the bias and standard error will be printed. If the \code{diff.fact} is set to \code{TRUE} when random simulations are requested, then also the weighting matrix used to reproduce the item frequencies in random data set will be printed. 
@@ -282,7 +287,18 @@ random.polychor.pa(nrep=3, data.matrix=bfi.data, q.eigen=.99)
 #bfi.data.age<-cbind(raw.data[, 28], raw.data[, 1:10])
 #head(bfi.data.age)
 
-#random.polychor.pa(nrep=100, data.matrix=bfi.data.age, q.eigen=.95, comparison=c("random-mg")) 
+#random.polychor.pa(nrep=100, data.matrix=bfi.data.age, q.eigen=.95, comparison=c("random-mg"))
+
+
+### EXAMPLE 8: 
+### WEIGHTED SAMPLE
+#require(psych)
+#data(bfi)
+#table(bfi$gender)
+## computing weights for gender assuming gender distribution in population is: 1==.20; 2==.80 
+#bfi$w.sex<-(bfi$gender == 1)*(0.20)+(bfi$gender == 2)*(0.80)
+#bfi.data<-na.omit(cbind(bfi[, 1:10],bfi$w.sex))
+#random.polychor.pa(nrep=100, data.matrix=bfi.data[, 1:10], q.eigen=.95, wght=bfi.data[,11])
 }
 \keyword{PARALLEL ANALYSIS}
 \keyword{POLYCHORIC CORRELATION MATRIX}

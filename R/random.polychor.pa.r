@@ -1,4 +1,4 @@
-random.polychor.pa <- function (nvar = "NULL", n.ss = "NULL", nrep, nstep = "NULL", data.matrix, q.eigen, r.seed = "NULL", diff.fact=FALSE, distr="NULL", comparison = "random", fit.pa=FALSE, print.all=FALSE, continuity=0.0) 
+random.polychor.pa <- function (nvar = "NULL", n.ss = "NULL", nrep, nstep = "NULL", data.matrix, q.eigen, r.seed = "NULL", diff.fact=FALSE, distr="NULL", comparison = "random", fit.pa=FALSE, print.all=FALSE, continuity=0.0, wght=NULL)
 {
   ### PRELIMINAR CHECK: START
   start.t <- Sys.time()
@@ -12,15 +12,19 @@ random.polychor.pa <- function (nvar = "NULL", n.ss = "NULL", nrep, nstep = "NUL
   }
   else{}
   if (distr=="uniform" & diff.fact==TRUE) { 
-    stop("Bad parameter specification. Uniform and difficulty factor not implemented")
+    stop("Bad parameter specification. Uniform and difficulty factor not yet implemented")
   }
   else{}
   if (distr=="multinomial" & diff.fact==TRUE) { 
-    stop("Bad parameter specification. Multinomial and difficulty factor not implemented")
+    stop("Bad parameter specification. Multinomial and difficulty factor not yet implemented")
   }
   else{}
   if (comparison=="bootstrap" & diff.fact==TRUE) { 
-    stop("Bad parameter specification. Bootstrap and difficulty factor not implemented")
+    stop("Bad parameter specification. Bootstrap and difficulty factor not yet implemented")
+  }
+  else{}
+  if (!is.null(wght) && diff.fact==TRUE) { 
+    stop("Bad parameter specification. Weights and difficulty factor not yet implemented")
   }
   else{}
   
@@ -29,7 +33,7 @@ random.polychor.pa <- function (nvar = "NULL", n.ss = "NULL", nrep, nstep = "NUL
   }
   else{}
   
-
+  
   data.matrix.0 <- na.omit(data.matrix)
   n.ss <- nrow(data.matrix)
   cat("*** number of units (rows) in data.matrix:", n.ss, "\n")
@@ -47,6 +51,7 @@ random.polychor.pa <- function (nvar = "NULL", n.ss = "NULL", nrep, nstep = "NUL
     cat("*** Number of samples and size of samples to be compared: ", "\n") # prints the number of samples to be used
     print(table(as.factor(multi.sample)))
     cat(" ", "\n") # prints the number of samples to be used
+#    weight.index <- cbind(data.matrix[,1], weights) # the index will be used for computing weighted covariance matrix 
     data.matrix <- data.matrix[,-1]
   }
   else{}
@@ -77,13 +82,31 @@ random.polychor.pa <- function (nvar = "NULL", n.ss = "NULL", nrep, nstep = "NUL
     }
   }  
   
-  for (z in 1:ncol(data.matrix)) {
-    if (is.numeric(data.matrix[, z]) == FALSE) {
-      data.matrix[, z] <- as.numeric(data.matrix[, z])
+  if(!is.null(wght)){
+    cat("*** data is weighted, checking for numeric and non-negative weights vector:\n")
+    if(nrow(data.matrix.0) != length(wght)){
+      stop("*** WARNING: data and vector of weights have different lenghts")
     }
-    else{}
+    if(is.vector(wght)==TRUE){
+      cat("   *** OK: weight factor is a vector\n")
+      if(is.numeric(wght)==TRUE){
+        cat("   *** OK: weight factor is numeric\n")
+      } else {
+        stop("   *** WARNING vector of weights is not numeric: check data\n")
+      }
+      if (all(wght >= 0)){
+        cat("   *** OK: weights are non-negative!\n")
+        weights<-wght
+      } else {
+        stop("   *** WARNING: only positive weights are allowed\n")
+      }
+    } else {
+      stop("   *** WARNING weights are not a vector: check data\n")
+    }
+  } else {
+    weights<-rep(1/nrow(data.matrix), nrow(data.matrix))
   }
-  
+
   data.matrix <- as.matrix(data.matrix)
   if (!is.null(dimnames(data.matrix))) {
     dimnames(data.matrix) <- list(NULL, NULL)
@@ -111,7 +134,7 @@ random.polychor.pa <- function (nvar = "NULL", n.ss = "NULL", nrep, nstep = "NUL
     cat("*** correction for continuity set to: 0.0","\n")
   }
   else {
-    cat("*** correction for continuity set to: 0.5","\n")
+    cat("*** correction for continuity set to:", continuity,"\n")
   }
     
   nvar <- ncol(data.matrix)
@@ -168,7 +191,7 @@ random.polychor.pa <- function (nvar = "NULL", n.ss = "NULL", nrep, nstep = "NUL
   
   ### PRELIMINAR CHECK: END
   
-  table(multi.sample)
+#  table(multi.sample)
   
   sub.sample<-matrix(, , sum(dim(table(multi.sample)))) # matrix that will contain the names of the sub-groups
   print.perm.eigen.polyc.fa<-list()
@@ -193,6 +216,8 @@ random.polychor.pa <- function (nvar = "NULL", n.ss = "NULL", nrep, nstep = "NUL
     
     ### selecting the sub-sample
     data.matrix.sub<-subset(data.matrix, multi.sample==categ)
+    ### selecting weights for sub-sample
+    weights.sub <-subset(weights, multi.sample==categ)
     ### computing the number of subjects and variables
     nvar.sub <- ncol(data.matrix.sub)
     n.ss.sub <- nrow(data.matrix.sub)
@@ -276,7 +301,7 @@ random.polychor.pa <- function (nvar = "NULL", n.ss = "NULL", nrep, nstep = "NUL
         }
         return(pre.matrix.3)
       }      
-      ### generating random samples: START
+      ### generating random samples: END
         
       
       ### COMPUTING FA eigenvalue distributons from RANDOM polychoric and pearson correlations: START
@@ -286,11 +311,13 @@ random.polychor.pa <- function (nvar = "NULL", n.ss = "NULL", nrep, nstep = "NUL
         f1.poly.cor <- matrix(0, nvar.sub, )
         f1.cor <- matrix(0, nvar.sub, )
         pre.st.matrix <- matrix(0, nvar.sub, 9)
+        cat("Computations for sub-sample: ", levels(as.factor(multi.sample))[w],"\n")
         
         for (j in 1:nrep) {
           matrix.3<-sim.random.matrix()
-          f1.poly.cor <- suppressMessages(polychoric(matrix.3, global=FALSE, correct=continuity)$rho)   # simulated polychoric corr
-          f1.cor <- cor(matrix.3)   # simulated pearson corr
+          f1.poly.cor <- suppressWarnings(suppressMessages(polychoric(matrix.3, global=FALSE, correct=continuity, weight=weights.sub)$rho))   # simulated polychoric corr
+#          f1.cor <- cor(matrix.3)   # simulated pearson corr
+          f1.cor <- cov.wt(matrix.3, wt=weights.sub, cor=TRUE)$cor   # simulated pearson WEIGHTED correlation matrix
           eigen.data[, j] <- eigen(corFA(f1.poly.cor))$values
           eigen.data1[, j] <- eigen(corFA(f1.cor))$values
           if (j == 1 & w == 1) {
@@ -299,11 +326,32 @@ random.polychor.pa <- function (nvar = "NULL", n.ss = "NULL", nrep, nstep = "NUL
             estimated.total <- estimated.t * nrep * sum(dim(table(multi.sample)))
             estimated.t <- as.numeric(estimated.t, units = "secs")
             estimated.total <- as.numeric(estimated.total, units = "secs")
-            cat("The first simulation for FA took:", round(estimated.t,3), "secs.", "\n")
+            cat(" The first simulation for FA took:", round(estimated.t,3), "secs.\n")
 #            cat("The whole simulation will take no less than:", round(estimated.total/60), "min.", "to terminate", "\n")
             flush.console()
           }
-          else{}
+          else{
+            if(((j/nrep)*100) == 25) {
+              percentage.nrep<-(j/nrep)*100
+              if(w != 1) {
+                cat(" FA: ",percentage.nrep, "% - ")
+              } else {
+                cat(percentage.nrep, "% - ")                
+              }
+            }
+            if(((j/nrep)*100) == 50) {
+              percentage.nrep<-(j/nrep)*100
+              cat(percentage.nrep, "% - ")
+            }
+            if(((j/nrep)*100) == 75) {
+              percentage.nrep<-(j/nrep)*100
+              cat(percentage.nrep, "% - ")
+            }
+            if(((j/nrep)*100) == 100) {
+              percentage.nrep<-(j/nrep)*100
+              cat(percentage.nrep, "% completed!\n")
+            }
+          }
         }
         for (col in 1:nvar.sub) {
           eigen.data.t <- t(eigen.data)
@@ -334,8 +382,9 @@ random.polychor.pa <- function (nvar = "NULL", n.ss = "NULL", nrep, nstep = "NUL
         
         for (j in 1:nrep) {
           matrix.3<-sim.random.matrix()
-          f1.poly.cor <- suppressMessages(polychoric(matrix.3, global=FALSE, correct=continuity)$rho)   # simulated polychoric corr
-          f1.cor <- cor(matrix.3)   # simulated pearson corr
+          f1.poly.cor <- suppressWarnings(suppressMessages(polychoric(matrix.3, global=FALSE, correct=continuity, weight=weights.sub)$rho))   # simulated polychoric corr
+#          f1.cor <- cor(matrix.3)   # simulated pearson corr
+          f1.cor <- cov.wt(matrix.3, wt=weights.sub, cor=TRUE)$cor  # simulated pearson WEIGHTED correlation matrix
           eigen.data.pca[, j] <- eigen(f1.poly.cor)$values
           eigen.data1.pca[, j] <- eigen(f1.cor)$values
           if (j == 1 & w == 1) {
@@ -345,11 +394,32 @@ random.polychor.pa <- function (nvar = "NULL", n.ss = "NULL", nrep, nstep = "NUL
             estimated.total <- estimated.t * nrep * sum(dim(table(multi.sample)))
             estimated.t <- as.numeric(estimated.t, units = "secs")
             estimated.total <- as.numeric(estimated.total, units = "secs")
-            cat("The first simulation for PCA took:", round(estimated.t,3), "secs.", "\n")
+            cat(" The first simulation for PCA took:", round(estimated.t,3), "secs.\n")
 #            cat("The whole simulation will take no less than:", round(estimated.total/60), "min.", "to terminate", "\n")
             flush.console()
           }
-          else{}
+          else{
+            if(((j/nrep)*100) == 25) {
+              percentage.nrep<-(j/nrep)*100
+              if(w != 1) {
+                cat(" PCA: ",percentage.nrep, "% - ")
+              } else {
+                cat(percentage.nrep, "% - ")                
+              }
+            }
+            if(((j/nrep)*100) == 50) {
+              percentage.nrep<-(j/nrep)*100
+              cat(percentage.nrep, "% - ")
+            }
+            if(((j/nrep)*100) == 75) {
+              percentage.nrep<-(j/nrep)*100
+              cat(percentage.nrep, "% - ")
+            }
+            if(((j/nrep)*100) == 100) {
+              percentage.nrep<-(j/nrep)*100
+              cat(percentage.nrep, "% completed!\n")
+            }
+          }
         }
         for (col in 1:nvar.sub) {
           eigen.data.pca.t <- t(eigen.data.pca)
@@ -368,14 +438,14 @@ random.polychor.pa <- function (nvar = "NULL", n.ss = "NULL", nrep, nstep = "NUL
       }
       st.matrix.pca <- random.eigen.pca.distr(dataset = data.matrix.sub)
     }
-    ### COMPUTING PCA eigenvalue distributons from RANDOM polychoric and pearson correlations: START
+    ### COMPUTING PCA eigenvalue distributons from RANDOM polychoric and pearson correlations: END
     
     
     ### random PERMUTATIONS of cases: START
     ######### RANDOM MULTISAMPLE POLYCHORIC.PA: START        
     if (comparison=="bootstrap" | comparison=="bootstrap-mg") {
       
-      ### this function is called within the boot function        
+      ### this function is called from within the boot function        
       bootstrap.eigen.polyc.fa <- function(d, i) {
         boot.matrix[i,1]<-d[,1][i]
         for (j in 2:ncol(d)) {
@@ -383,7 +453,7 @@ random.polychor.pa <- function (nvar = "NULL", n.ss = "NULL", nrep, nstep = "NUL
           boot.matrix[,j]<-column[i]
         }
         # cat("\n", "BOOTSTRAP sampled FA eigenvalues from POLYCHORIC correlations", "\n")
-        boot.polyc<-suppressMessages(polychoric(boot.matrix, global=FALSE, correct=continuity)$rho) ### polychoric correlation
+        boot.polyc<-suppressWarnings(suppressMessages(polychoric(boot.matrix, global=FALSE, correct=continuity, weight=weights.sub)$rho)) ### polychoric correlation
         eigen.polyc.fa<-eigen(corFA(boot.polyc))$values       ### FA
         return(eigen.polyc.fa)
       }
@@ -395,7 +465,7 @@ random.polychor.pa <- function (nvar = "NULL", n.ss = "NULL", nrep, nstep = "NUL
           boot.matrix[,j]<-column[i]
         }
         # cat("\n", "BOOTSTRAP sampled PCA eigenvalues from POLYCHORIC correlations", "\n")
-        boot.polyc<-suppressMessages(polychoric(boot.matrix, global=FALSE, correct=continuity)$rho) ### polychoric correlation
+        boot.polyc<-suppressWarnings(suppressMessages(polychoric(boot.matrix, global=FALSE, correct=continuity, weight=weights.sub)$rho)) ### polychoric correlation
         eigen.polyc.pca<-eigen(boot.polyc)$values             ### PCA
         return(eigen.polyc.pca)
       }
@@ -407,7 +477,8 @@ random.polychor.pa <- function (nvar = "NULL", n.ss = "NULL", nrep, nstep = "NUL
           boot.matrix[,j]<-column[i]
         }
         # cat("\n", "BOOTSTRAP sampled FA eigenvalues from PEARSON correlations", "\n")
-        boot.pear<-cor(boot.matrix)                   ### pearson correlation
+#        boot.pear<-cor(boot.matrix)                   ### pearson correlation
+        boot.pear<-cov.wt(boot.matrix, wt=weights.sub, cor=TRUE)$cor  ### pearson WEIGHTED correlation
         eigen.pear.fa<-eigen(corFA(boot.pear))$values ### FA
         return(eigen.pear.fa)
       }
@@ -419,13 +490,15 @@ random.polychor.pa <- function (nvar = "NULL", n.ss = "NULL", nrep, nstep = "NUL
           boot.matrix[,j]<-column[i]
         }
         # cat("\n", "BOOTSTRAP sampled PCA eigenvalues from PEARSON correlations", "\n")
-        boot.pear<-cor(boot.matrix)             ### pearson correlation
+#        boot.pear<-cor(boot.matrix)             ### pearson correlation
+        boot.pear<-cov.wt(boot.matrix, wt=weights.sub, cor=TRUE)$cor             ### pearson WEIGHTED correlation
         eigen.pear.pca<-eigen(boot.pear)$values ### PCA
         return(eigen.pear.pca)
       }
       ### RANDOM PERMUTATIONS of cases: END
       
-      ### BOOTSTRAP: START
+      ### BOOTSTRAP: START 
+      cat("Computations for sub-sample: ", levels(as.factor(multi.sample))[w],"\n")
       boot.matrix<-matrix(0, nrow(data.matrix.sub), ncol(data.matrix.sub))    
       b.perm.eigen.polyc.fa <- boot(data.matrix.sub, bootstrap.eigen.polyc.fa, R=nrep, sim="permutation", stype="i")
       boot.matrix<-matrix(0, nrow(data.matrix.sub), ncol(data.matrix.sub))
@@ -462,8 +535,9 @@ random.polychor.pa <- function (nvar = "NULL", n.ss = "NULL", nrep, nstep = "NUL
     ###### PUT THE FOLLOWING RESULTS IN A NEW NAMED COMMON MATRIX (COMMON TO RANDOM AND BOOSTRAP)
     
     ### COMPUTING EMPIRICAL CORRELATION MATRICES: START 
-    matrix.cor1 <- suppressMessages(polychoric(data.matrix.sub, global=FALSE, correct=continuity)$rho)
-    matrix.cor2 <- cor(data.matrix.sub)
+    matrix.cor1 <- suppressWarnings(suppressMessages(polychoric(data.matrix.sub, global=FALSE, correct=continuity, weight=weights.sub)$rho))
+#    matrix.cor2 <- cor(data.matrix.sub)
+    matrix.cor2 <- cov.wt(data.matrix.sub, wt=weights.sub, cor=TRUE)$cor
     ### COMPUTING EMPIRICAL CORRELATION MATRICES: END
     ### COMPUTING EMPIRICAL EIGENVALUES FA/PCA RESULTS: START
     raw.eigen.poly.fa<- eigen(corFA(matrix.cor1))$values  # Empirical FA with polychoric corr 
@@ -632,7 +706,7 @@ random.polychor.pa <- function (nvar = "NULL", n.ss = "NULL", nrep, nstep = "NUL
       for (t in 1:2) {     # 1) emp-polyc-corr; 2) sim-polyc-corr; 3) emp-pears-corr; 4) sim-pears-corr; 
         if (t==2) {type.cor<-matrix.cor2} # 3) emp-pears-corr; 
         for (n in 1:q) {   # q is the number factor, when zero then the fit is computed only on the first extracted factor
-          fit.fa<-fa(type.cor, nfactors=n, n.obs=n.ss.sub, alpha=0.01)  # Empirical+FA+polychoric
+          fit.fa<-try(fa(type.cor, nfactors=n, n.obs=n.ss.sub, alpha=0.01), silent = TRUE)  # Empirical+FA+polychoric
           ind<-index2+index1
           table.fit.res[ind,1]<-paste('sample',categ, sep=".") # list of name for the sub-group
           table.fit.res[ind,2]<-type.label[t,]
@@ -641,9 +715,17 @@ random.polychor.pa <- function (nvar = "NULL", n.ss = "NULL", nrep, nstep = "NUL
           table.fit.res[ind,5]<-round(fit.fa$dof, 3)
           table.fit.res[ind,6]<-round(fit.fa$PVAL, 3)
           table.fit.res[ind,7]<-round(fit.fa$TLI[1], 3)
-          table.fit.res[ind,8]<-round(fit.fa$RMSEA[1], 3)
+          if(is.null(fit.fa$RMSEA[1]) == TRUE) {
+            table.fit.res[ind,8]<-NaN
+          } else {
+            table.fit.res[ind,8]<-round(fit.fa$RMSEA[1], 3)
+          }
           table.fit.res[ind,9]<-round(fit.fa$rms, 3)
-          table.fit.res[ind,10]<-round(fit.fa$BIC, 3)
+          if(is.null(fit.fa$BIC) == TRUE) {
+            table.fit.res[ind,10]<-NaN
+          } else {
+            table.fit.res[ind,10]<-round(fit.fa$BIC, 3)
+          }
           #          table.fit.res[ind,11]<-round(fit.fa$R2, 3)
           index1<-index1+1
         }
@@ -675,9 +757,9 @@ random.polychor.pa <- function (nvar = "NULL", n.ss = "NULL", nrep, nstep = "NUL
     
     ### SAVING RESULTS matrix: START
     end.t <- Sys.time()
-    elapsed.t <-as.numeric(difftime(end.t, start.t), units = "secs")
+    elapsed.t <-as.numeric(difftime(end.t, start.t), units = "mins")
     cat("computation ended at:", format(end.t, "%X"), "\n")
-    cat("Elapsed Time:", round(elapsed.t/60), "min", "\n")
+    cat("Elapsed Time:", round(elapsed.t), "mins", "\n")
     
     table.pa.res[1,w]<-which.min(map.result[,2])-1
     table.pa.res[2,w]<-which.min(map.result[,3])-1
@@ -879,8 +961,8 @@ random.polychor.pa <- function (nvar = "NULL", n.ss = "NULL", nrep, nstep = "NUL
       points(st.matrix[, 5], st.matrix[, 4], type = "b", pch = 8)
       points(st.matrix[, 5], st.matrix[, 11], type = "b", pch = 20, col = "red")
       points(st.matrix[, 5], st.matrix[, 9], type = "b", pch = 2, col = "red")
-      perc <- paste(q.eigen * 100, "* perc. Polychoric corr. Sim. FA", sep = "")
-      perc1 <- paste(q.eigen * 100, "* perc. Pearson corr. Sim. FA", sep = "")
+      perc <- paste(q.eigen * 100, "* perc. Polychoric Sim. FA", sep = "")
+      perc1 <- paste(q.eigen * 100, "* perc. Pearson Sim. FA", sep = "")
       res <- (pa.result[1,])
       res1 <- (pa.result[2,])
       res.pca <- (pa.result[3,])
@@ -888,8 +970,9 @@ random.polychor.pa <- function (nvar = "NULL", n.ss = "NULL", nrep, nstep = "NUL
       ris <- paste("# factors with Polyc.PA: ", res, sep = "")
       ris1 <- paste("# factors with Pear.PA: ", res1, sep = "")
       
-      legend(x = "topright", c("Polychoric corr. Empirical FA", "Pearson corr. Empirical FA", perc, perc1, ris, ris1), 
-             col = c(1, 2, 1, 2, 1, 2), pch = c(1, 20, 8, 2), y.intersp=0.4, cex=0.95)
+      legend(x = "bottomright", c("Polychoric Empirical FA", "Pearson Empirical FA", perc, perc1, ris, ris1), 
+             col = c(1, 2, 1, 2, 1, 2), pch = c(1, 20, 8, 2), y.intersp=0.4, cex=0.95, 
+             inset = c(0,1), xpd = TRUE, horiz = FALSE, bty = "n")
       
       abline(h = 1)
       abline(h = 0)

@@ -11,8 +11,8 @@
   \tabular{ll}{
     Package: \tab random.polychor.pa\cr
     Type: \tab Package\cr
-    Version: \tab 1.1.4-3\cr
-    Date: \tab 2019-12-11\cr
+    Version: \tab 1.1.4-4\cr
+    Date: \tab 2020-02-25\cr
     License: \tab GPL Version 2 or later\cr
     LazyLoad: \tab yes\cr
 }
@@ -28,6 +28,8 @@ Fit statistics (Chi-squared, TLI, RMSEA, RMR, BIC) for all factor solutions indi
 The \code{print.all} parameter when set to  \code{TRUE} will show the table of eigenvalue distributions for simulated (random or boostrap) and empirical data. For boostrap simulation, also the bias and standard error will be printed. If the \code{diff.fact} is set to \code{TRUE} when random simulations are requested, then also the weighting matrix used to reproduce the item frequencies in random data set will be printed.
 
 The \code{continuity} parameter is passed to polychoric() function to handle the correction for continuity. In polychoric() function this correction for continuity is set by default to .5 (i.e. correct=TRUE). However in some cases this correction for continuity causes the polychorich() function to stop unexpectedly and consequently also random.polychor.pa() stops. So we added this parameter to allow users to bypass this problem. This parameter is set by default to 0.0 (i.e., no correction for continuity applied) and user may add the correction for continuity by setting the value to 0.5.
+
+The \code{wght} parameter allows the user to provide a vector of non-negative weights to compute a weighted random polychor (or pearson) correlation matrix and as well the simulation of weighted random samples. If \code{bootstrap} is also selected, then a weighted bootstrap samples will be extracted. Finally if \code{multisample} is also selected then it will be computed a random weighted samples for each sub-group. 
 }
 \author{
   Fabio Presaghi \email{fabio.presaghi@uniroma1.it} and Marta Desimoni \email{marta.desimoni@uniroma1.it}
@@ -54,5 +56,6 @@ The \code{continuity} parameter is passed to polychoric() function to handle the
 \keyword{MULTINOMIAL DISTRIBUTION}
 \keyword{MULTIGROUP}
 \keyword{BOOTSTRAP}
+\keyword{WEIGHTS}
 \keyword{FIT INDEXES}
 \keyword{EXPLORATORY FACTOR ANALYSIS}
