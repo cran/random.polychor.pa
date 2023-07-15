@@ -1,7 +1,7 @@
 Package: random.polychor.pa
 Title: A Parallel Analysis with Polychoric Correlation Matrices
-Version: 1.1.4-4
-Date: 2020-07-25
+Version: 1.1.4-5
+Date: 2023-06-29
 Authors@R: c(person("Fabio", "Presaghi", role=c("aut", "cre"), 
 	email="fabio.presaghi@uniroma1.it"), 
 	person("Marta", "Desimoni", role="ctb"))
@@ -10,13 +10,12 @@ Depends: psych, nFactors, boot
 Imports: MASS, mvtnorm, sfsmisc
 License: GPL (>= 2)
 LazyLoad: yes
-LazyData: yes
 NeedsCompilation: no
 Encoding: UTF-8
-Packaged: 2020-07-26 09:38:24 UTC; fabio
+Packaged: 2023-07-15 09:18:12 UTC; fabio
 Author: Fabio Presaghi [aut, cre],
   Marta Desimoni [ctb]
 Maintainer: Fabio Presaghi <fabio.presaghi@uniroma1.it>
 Repository: CRAN
 Suggests:
-Date/Publication: 2020-07-26 09:50:03 UTC
+Date/Publication: 2023-07-15 09:50:02 UTC

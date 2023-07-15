@@ -3,10 +3,11 @@ citHeader("To cite package ‘random.polychor.pa’ in publications use:")
      year <- sub(".*(2[[:digit:]]{3})-.*", "\\1", meta$Date, perl = TRUE)
      vers <- paste("R package version", meta$Version)
      
-     citEntry(entry="Manual",
+     bibentry(bibtype = "Manual",
               title = "random.polychor.pa: A Parallel Analysis with Polychoric Correlation Matrices",
-              author = personList(as.person("Fabio Presaghi"),
-                                  as.person("Marta Desimoni")),
+              author = c(as.person("Fabio Presaghi"),
+                         as.person("Marta Desimoni")),
+              address = "Department of Social and Developmental Psychology, Sapienza University, Rome, Italy",
               year = year,
               note = vers,
      

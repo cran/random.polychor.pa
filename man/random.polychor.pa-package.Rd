@@ -12,7 +12,7 @@
     Package: \tab random.polychor.pa\cr
     Type: \tab Package\cr
     Version: \tab 1.1.4-4\cr
-    Date: \tab 2020-02-25\cr
+    Date: \tab 2023-06-29\cr
     License: \tab GPL Version 2 or later\cr
     LazyLoad: \tab yes\cr
 }
